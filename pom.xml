@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>tw.org.cmex.misc.pom</groupId>
+		<artifactId>pom-java</artifactId>
+		<version>1.2</version>
+	  </parent>
+	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>Rabbit</groupId>
+	<groupId>tw.org.cmex.java.commons</groupId>
 	<artifactId>Rabbit</artifactId>
 	<version>4.2-SNAPSHOT</version>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<scm>
-		<developerConnection>scm:git:ssh://git@git.cmex.org.tw/git/java/commons/rabbit.git</developerConnection>
-	</scm>
-	<build>
 
+	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -22,22 +22,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>git.cmex.org.tw</id>
-			<name>CMEX Release Repository</name>
-			<url>scp://git.cmex.org.tw/maven/release</url>
-			<layout>default</layout>
-		</repository>
-		<snapshotRepository>
-			<uniqueVersion>true</uniqueVersion>
-			<id>git.cmex.org.tw</id>
-			<name>CMEX Snapshot Repository</name>
-			<url>scp://git.cmex.org.tw/maven/snapshot</url>
-			<layout>default</layout>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -69,7 +53,6 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.3.2</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>commons-fileupload</groupId>
