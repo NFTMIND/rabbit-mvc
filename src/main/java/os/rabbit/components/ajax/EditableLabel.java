@@ -32,6 +32,7 @@ public class EditableLabel extends FormComponent<String> {
 
 			@Override
 			public void invoke() {
+				System.out.println("editablelabel");
 				for (IUpdateListener listener : listeners) {
 					listener.update(getValue());
 				}
@@ -65,7 +66,7 @@ public class EditableLabel extends FormComponent<String> {
 		getPage().addScript("EDITABLE_LABEL", new IRender() {
 			@Override
 			public void render(PrintWriter writer) {
-				writer.println("function onEditComplete(eventObject) {");
+				writer.println("function onEditComplete(eventObject, callback) {");
 				writer.println("	var field = $(eventObject.target);");
 				writer.println("	var jObject = $(eventObject.target).data('object');");
 
@@ -96,11 +97,13 @@ public class EditableLabel extends FormComponent<String> {
 				writer.println("	field.focus();");
 
 				writer.println("	jObject.css(\"display\", \"none\");");
-				writer.println("	field.blur(onEditComplete);");
+				writer.println("	field.blur(function(e) {");
+				writer.println("			onEditComplete(e, callback)");
+				writer.println("	});");
 				writer.println("	field.keyup(function(e) {");
 
 				writer.println("		if(e.keyCode == 13)");
-				writer.println("			onEditComplete(e)");
+				writer.println("			onEditComplete(e, callback)");
 
 				writer.println("	});");
 

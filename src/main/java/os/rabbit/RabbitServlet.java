@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
 
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.ServletConfig;
@@ -59,11 +60,11 @@ public class RabbitServlet extends HttpServlet {
 					provider = new FileItemKeyValueProvider(req);
 				} else {
 					provider = new ReqKeyValueProvider(req);
-	
+
 				}
 				req.setAttribute("KEY_VALUE_PROVIDER", provider);
 			}
-	
+
 			String contextPath = req.getContextPath();
 			String uri = req.getRequestURI();
 			if (req.getAttribute("javax.servlet.include.request_uri") != null) {
@@ -71,17 +72,14 @@ public class RabbitServlet extends HttpServlet {
 
 			}
 			req.setAttribute("RBT_REQ_URI", uri);
-			
-			
+
 			if (req.getAttribute("os.rabbit.uri") == null) {
 				req.setAttribute("os.rabbit.uri", req.getRequestURI());
 			}
 
 			String path = uri.substring(contextPath.length(), uri.length());
 			String rbtType = (String) provider.get("rbtType");
-			
 
-			
 			if (path.startsWith(resourceDir)) {
 
 				long ifModifiedSince = req.getDateHeader("If-Modified-Since");
@@ -116,18 +114,41 @@ public class RabbitServlet extends HttpServlet {
 			resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 			resp.setHeader("Pragma", "no-cache");
 
-	
 			if (rbtType == null) {
 				resp.setContentType("text/html");
 				if (page != null) {
 					page.requestStart(req, resp);
-					//page.setRequestURI(uri);
+					// page.setRequestURI(uri);
 					try {
 						if (!page.isAuthorized()) {
 							String unauthorizedURI = getInitParameter("unauthorized");
 							if (unauthorizedURI != null) {
 
-								req.setAttribute("UNAUTHORIZED_URI", req.getAttribute("os.rabbit.uri"));
+								StringBuilder builder = new StringBuilder();
+
+								Map<String, String[]> map = req.getParameterMap();
+								for (String key : map.keySet()) {
+
+									String[] values = map.get(key);
+									for(String value : values) {
+										builder.append(key);
+										builder.append("=");
+										builder.append(value);
+									}
+								}
+								if (builder.length() > 0) {
+									builder.deleteCharAt(builder.length() - 1);
+								}
+								String unauthorizedURL = uri;
+								if (builder.length() > 0)
+									if (uri.indexOf("?") == -1) {
+
+										unauthorizedURL = uri + "?" + builder.toString();
+									} else {
+
+										unauthorizedURL = uri + "&" + builder.toString();
+									}
+								req.setAttribute("UNAUTHORIZED_URI", unauthorizedURL);
 								req.getRequestDispatcher(unauthorizedURI).forward(req, resp);
 
 								return;
@@ -159,12 +180,36 @@ public class RabbitServlet extends HttpServlet {
 
 				if (page != null) {
 					page.requestStart(req, resp);
-				
+
 					try {
 						if (!page.isAuthorized()) {
 							String unauthorizedURI = getInitParameter("unauthorized");
 							if (unauthorizedURI != null) {
-								req.setAttribute("UNAUTHORIZED_URI", req.getAttribute("os.rabbit.uri"));
+								StringBuilder builder = new StringBuilder();
+
+								Map<String, String[]> map = req.getParameterMap();
+								for (String key : map.keySet()) {
+
+									String[] values = map.get(key);
+									for(String value : values) {
+										builder.append(key);
+										builder.append("=");
+										builder.append(value);
+									}
+								}
+								if (builder.length() > 0) {
+									builder.deleteCharAt(builder.length() - 1);
+								}
+								String unauthorizedURL = uri;
+								if (builder.length() > 0)
+									if (uri.indexOf("?") == -1) {
+
+										unauthorizedURL = uri + "?" + builder.toString();
+									} else {
+
+										unauthorizedURL = uri + "&" + builder.toString();
+									}
+								req.setAttribute("UNAUTHORIZED_URI", unauthorizedURL);
 								req.getRequestDispatcher(unauthorizedURI).forward(req, resp);
 
 								return;
@@ -177,7 +222,7 @@ public class RabbitServlet extends HttpServlet {
 						StringBuffer ajaxLogger = new StringBuffer();
 						final String triggerId = (String) provider.get("triggerId");
 						ITrigger trigger = page.getTrigger(triggerId);
-						
+
 						if (trigger != null) {
 							trigger.invoke();
 						} else {
@@ -187,7 +232,7 @@ public class RabbitServlet extends HttpServlet {
 
 						if (rbtType.equals("INVOKE")) {
 							resp.setContentType("text/html");
-				
+
 							PrintWriter writer = new PrintWriter(page.getWriter());
 							page.render(writer);
 							if (page.getRedirect() != null) {
@@ -196,7 +241,7 @@ public class RabbitServlet extends HttpServlet {
 							}
 							writer.flush();
 							resp.getWriter().write(page.getWriter().toString());
-						} else if(rbtType.equals("AJAX_INVOKE")){
+						} else if (rbtType.equals("AJAX_INVOKE")) {
 
 							resp.setContentType("text/xml");
 							PrintWriter writer = resp.getWriter();
@@ -213,9 +258,9 @@ public class RabbitServlet extends HttpServlet {
 
 						} else {
 							resp.setContentType("text/html");
-							
+
 							PrintWriter writer = new PrintWriter(page.getWriter());
-		
+
 							writer.flush();
 							resp.getWriter().write(page.getWriter().toString());
 						}
@@ -232,7 +277,7 @@ public class RabbitServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-		
+
 			e.printStackTrace();
 
 			throw new ServletException(e);
@@ -251,7 +296,7 @@ public class RabbitServlet extends HttpServlet {
 			public boolean visit(Component component) {
 				if (component instanceof FormComponent) {
 					FormComponent formCmp = (FormComponent) component;
-				
+
 					if (keyValueProvider.get(formCmp.getId()) != null) {
 						formCmp.update();
 					}

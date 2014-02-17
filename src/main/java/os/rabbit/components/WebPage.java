@@ -44,7 +44,8 @@ public class WebPage extends Component {
 		}
 	}
 
-	//private LinkedList<Component> pageInjectComponents = new LinkedList<Component>();
+	// private LinkedList<Component> pageInjectComponents = new
+	// LinkedList<Component>();
 	private ThreadLocal<HttpServletRequest> request = new ThreadLocal<HttpServletRequest>();
 	private ThreadLocal<HttpServletResponse> response = new ThreadLocal<HttpServletResponse>();
 
@@ -61,7 +62,7 @@ public class WebPage extends Component {
 
 			@Override
 			public boolean visit(Component component) {
-				
+
 				component.buildComplete();
 				return true;
 			}
@@ -218,9 +219,11 @@ public class WebPage extends Component {
 	public void addScript(String name, IRender script) {
 		scripts.put(name, script);
 	}
+
 	private void initChildrenComponent(Component container, Component parent, Tag tag) {
 		initChildrenComponent("", container, parent, tag);
 	}
+
 	/**
 	 * 初始化所有子元件 如果遇到Tag內含"rabbit:class"屬性 則自動產生新元件，並將Tag內的所有子元件納入該元件內
 	 * 
@@ -231,37 +234,30 @@ public class WebPage extends Component {
 		for (Tag eachTag : tag.getChildrenTags()) {
 
 			String rabbitId = eachTag.getAttribute("rabbit:id");
-			//if(rabbitId != null) {
-			//	System.out.println(space + "rabbit:id:" + rabbitId);
-			//}
+	
 			String rabbitClass = eachTag.getAttribute("rabbit:class");
 			if (rabbitClass != null) {
 				try {
-					//System.out.println("Container:" + rabbitClass);
-					
+				
 					Component newParentComponent = createComponentByClassName(rabbitClass, eachTag);
 					newParentComponent.setContainer(true);
 					parent.addChild(newParentComponent);
 
-					//PageInject pageInject = newParentComponent.getClass().getAnnotation(PageInject.class);
-					//if (pageInject != null) {
-						//pageInjectComponents.add(newParentComponent);
-					//}
+				
 					initChildrenComponent(space + "	", newParentComponent, newParentComponent, eachTag);
 
 				} catch (Exception e) {
 					throw new RuntimeException(e);
-					//logger.error(e.getMessage(), e);
 				}
 			} else {
 				if (rabbitId != null) {
-					
+
 					Component newComponent = buildComponent(container, parent, rabbitId, eachTag);
 					boolean isContainer = newComponent != null && newComponent.getClass().getAnnotation(RabbitContainer.class) != null;
-					if(newComponent != null) {
+					if (newComponent != null) {
 						newComponent.setContainer(isContainer);
 					}
-					if(isContainer) {
+					if (isContainer) {
 						initChildrenComponent(space + "	", newComponent, newComponent, eachTag);
 					} else {
 						initChildrenComponent(space + "	", container, newComponent, eachTag);
@@ -284,36 +280,44 @@ public class WebPage extends Component {
 	@SuppressWarnings("unchecked")
 	private Component createComponentByClassName(String className, Tag tag) throws Exception {
 
-		Class<Component> targetClass = (Class<Component>) Class.forName(className);
-		Constructor<Component> constructor = targetClass.getConstructor(Tag.class);
-		return constructor.newInstance(tag);
+		Class<Component> targetClass;
+		try {
+			targetClass = (Class<Component>) Class.forName(className);
+
+			Constructor<Component> constructor = targetClass.getConstructor(Tag.class);
+			return constructor.newInstance(tag);
+		} catch (ClassNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}
+
 	}
 
-	
 	private Field getField(Class<? extends Component> c, String name) {
 		Field field = null;
 		try {
 			field = c.getDeclaredField(name);
-			
-			
+
 		} catch (NoSuchFieldException e) {
 		} catch (SecurityException e) {
 		}
 		return field;
 	}
-	
+
 	private Field searchField(Class<? extends Component> c, String name) {
 		Field field = getField(c, name);
-		if(field == null) {
-			Class<? extends Component> sc = (Class<? extends Component>)c.getSuperclass();
+		if (field == null) {
+			Class<? extends Component> sc = (Class<? extends Component>) c.getSuperclass();
 			RabbitContainer container = sc.getAnnotation(RabbitContainer.class);
-			if(container != null) {
+			if (container != null) {
 				field = searchField(sc, name);
 			}
 
 		}
 		return field;
 	}
+
 	/**
 	 * 依RabbitId尋找對應父的元件內是否有相同名稱欄位，如果有就自動初始化元件
 	 * 
@@ -325,18 +329,20 @@ public class WebPage extends Component {
 	private Component buildComponent(Component container, Component parent, String name, Tag tag) {
 		Class<? extends Component> classInstance = container.getClass();
 		try {
-		
+
 			Field field = searchField(classInstance, name);
 
-			if(field == null) return null;
-			
-			
+			if (field == null) {
+				logger.warn("field \""+name+"\" couldn't be found.");
+				return null;
+			}
+
 			Class<?> fieldClass = field.getType();
 			Constructor<?> mappedConstructor = fieldClass.getConstructor(Tag.class);
 			Component mappedComponent = (Component) mappedConstructor.newInstance(tag);
 			field.setAccessible(true);
 			field.set(container, mappedComponent);
-			
+
 			parent.addChild(mappedComponent);
 			return mappedComponent;
 
@@ -360,26 +366,27 @@ public class WebPage extends Component {
 	private ThreadLocal<Writer> writer = new ThreadLocal<Writer>();
 
 	private LinkedList<IRequestCycleListener> rclList = new LinkedList<IRequestCycleListener>();
-	public void addRequestCycleListener(IRequestCycleListener listener){
+
+	public void addRequestCycleListener(IRequestCycleListener listener) {
 		rclList.add(listener);
 	}
-	
+
 	public void requestStart(HttpServletRequest request, HttpServletResponse response) {
 		this.request.set(request);
 		this.response.set(response);
 		writer.set(new StringWriter());
-		for(IRequestCycleListener rcl : rclList) {
+		for (IRequestCycleListener rcl : rclList) {
 			rcl.requestStart(request, response);
 		}
 	}
 
 	public void requestEnd() {
-		for(IRequestCycleListener rcl : rclList) {
+		for (IRequestCycleListener rcl : rclList) {
 			rcl.requestEnd(request.get(), response.get());
 		}
 		this.request.remove();
 		this.response.remove();
-		
+
 	}
 
 	public Writer getWriter() {
@@ -495,13 +502,13 @@ public class WebPage extends Component {
 		triggerTable.put(id, trigger);
 	}
 
-//	public List<Component> getPageInjectComponents() {
-//		return pageInjectComponents;
-//	}
+	// public List<Component> getPageInjectComponents() {
+	// return pageInjectComponents;
+	// }
 
-//	public void setRequestURI(String uri) {
-//		getPage().getRequest().setAttribute("RBT_REQ_URI", uri);
-//	}
+	// public void setRequestURI(String uri) {
+	// getPage().getRequest().setAttribute("RBT_REQ_URI", uri);
+	// }
 
 	public String getRequestURI() {
 		return (String) getPage().getRequest().getAttribute("RBT_REQ_URI");
@@ -536,6 +543,18 @@ public class WebPage extends Component {
 			}
 		}
 		return true;
+	}
+
+	public int generateRenderIndex() {
+
+		Integer index = (Integer) getAttribute("renderIndex");
+		if (index == null) {
+			index = 1;
+		} else {
+			index++;
+		}
+		setAttribute("renderIndex", index);
+		return index;
 	}
 
 }

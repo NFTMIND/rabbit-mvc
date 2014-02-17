@@ -18,6 +18,7 @@ public class DivAlone extends Component{
 	}
 	
 	
+	
 
 	@Override
 	protected void afterBuild() {

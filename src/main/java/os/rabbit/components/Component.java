@@ -79,6 +79,7 @@ public class Component implements IModifier {
 			// attribute:value,title
 			// body
 			//
+	
 			String translation = tag.getAttribute("rabbit:translation");
 			if (translation.startsWith("attribute")) {
 				String sources = translation.substring(10, translation.length());
@@ -214,8 +215,10 @@ public class Component implements IModifier {
 
 	public int getRenderIndex() {
 		Integer returnVal = (Integer) getAttribute("renderIndex");
-		if (returnVal == null)
-			return 1;
+		if (returnVal == null) {
+			returnVal = getPage().generateRenderIndex();
+			setAttribute("renderIndex", returnVal);
+		}
 
 		return returnVal;
 	}
@@ -290,7 +293,7 @@ public class Component implements IModifier {
 	}
 
 	public String transalte(String word, String targetLanguage) {
-
+		
 		String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + targetLanguage + ".xml");
 
 		Map<String, String> map = getLanguageTable(targetLanguage);
@@ -300,7 +303,7 @@ public class Component implements IModifier {
 
 			return translation;
 		} else {
-
+			if(true) return word;
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			int dash = targetLanguage.indexOf("_");
 			String l = targetLanguage;
@@ -565,16 +568,11 @@ public class Component implements IModifier {
 	@Override
 	public void render(PrintWriter writer) {
 		if (isVisible()) {
-			Integer renderIndex = (Integer) getPage().getAttribute("renderIndex");
-			if (renderIndex == null) {
-				renderIndex = 1;
-			} else {
-				renderIndex++;
-			}
+			getRenderIndex();
 
-			getPage().setAttribute("renderIndex", renderIndex);
-			setAttribute("renderIndex", renderIndex);
 
+
+	
 			for (IComponentListener listener : componentListenerList) {
 				listener.beforeRender();
 			}
@@ -598,9 +596,14 @@ public class Component implements IModifier {
 				writer.write("<span id=\"" + getId() + "\" />");
 			}
 			afterRender();
+		
 			for (IComponentListener listener : componentListenerList) {
 				listener.afterRender();
 			}
+			
+			
+			setAttribute("renderIndex", getPage().generateRenderIndex());
+		
 
 		} else {
 			writer.write("<span id=\"" + getId() + "\" />");
