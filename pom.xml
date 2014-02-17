@@ -1,17 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>tw.org.cmex.misc.pom</groupId>
 		<artifactId>pom-java</artifactId>
 		<version>1.2</version>
-	  </parent>
-	
+	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tw.org.cmex.java.commons</groupId>
 	<artifactId>rabbit</artifactId>
-	<version>4.4-SNAPSHOT</version>
-	
+	<version>4.4.3-SNAPSHOT</version>
+
 	<scm>
-	  <developerConnection>scm:git:ssh://git.cmex.org.tw/git/java/commons/rabbit.git</developerConnection>
+		<developerConnection>scm:git:ssh://git.cmex.org.tw/git/java/commons/rabbit.git</developerConnection>
 	</scm>
 
 	<build>
