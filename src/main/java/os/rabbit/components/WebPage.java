@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -53,10 +54,10 @@ public class WebPage extends Component {
 	private HashMap<String, IRender> scripts = new HashMap<String, IRender>();
 	private HashMap<String, IRender> scriptImports = new HashMap<String, IRender>();
 	private HashMap<String, IRender> cssImports = new HashMap<String, IRender>();
-
-	public WebPage(final Tag tag) {
+	private ServletContext context;
+	public WebPage(ServletContext context, final Tag tag) {
 		super(tag);
-
+		this.context = context;
 		initChildrenComponent(this, this, tag);
 		reverseVisit(new IComponentVisitor() {
 
@@ -105,6 +106,9 @@ public class WebPage extends Component {
 
 		}
 
+	}
+	public ServletContext getServletContext() {
+		return context;
 	}
 
 	public Tag findScriptOrLinkOrStyleTag(Tag tag) {

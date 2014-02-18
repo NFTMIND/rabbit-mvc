@@ -90,7 +90,7 @@ public class Component implements IModifier {
 						public void render(PrintWriter writer) {
 							String value = getTag().getAttribute(attr);
 							if (value != null) {
-								String rs = transalte(getTag().getAttribute(attr), getSelectedLocale());
+								String rs = transalte(getTag().getAttribute(attr), getLocale());
 								if (rs != null) {
 									writer.write(rs);
 								} else {
@@ -107,7 +107,7 @@ public class Component implements IModifier {
 						if (getTag().hasBody()) {
 							String body = getTag().getTemplate().substring(getTag().getBodyStart(), getTag().getBodyEnd());
 
-							String rs = transalte(body, getSelectedLocale());
+							String rs = transalte(body, getLocale());
 							if (rs != null) {
 								writer.write(rs);
 							} else {
@@ -175,7 +175,7 @@ public class Component implements IModifier {
 
 	private static HashMap<String, HashMap<String, String>> languageWordMap = new HashMap<String, HashMap<String, String>>();
 
-	public String getSelectedLocale() {
+	public String getLocale() {
 
 		String selectedLocale = (String) getPage().getRequest().getSession().getAttribute("locale");
 		if (selectedLocale == null) {
@@ -289,7 +289,7 @@ public class Component implements IModifier {
 	}
 
 	public String transalte(String word) {
-		return transalte(word, getSelectedLocale());
+		return transalte(word, getLocale());
 	}
 
 	public String transalte(String word, String targetLanguage) {

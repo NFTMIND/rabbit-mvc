@@ -1,5 +1,7 @@
 package os.rabbit.components;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.context.WebApplicationContext;
 
 import os.rabbit.parser.Tag;
@@ -11,8 +13,15 @@ public class SpringBeanSupportComponent extends Component {
 		super(tag);
 
 	}
+//	public static WebApplicationContext getWebApplicatioonContext(HttpServletRequest req) {
+//		return (WebApplicationContext) req.getSession().getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+//	}
+//	
+	public static WebApplicationContext getWebApplicationContext(WebPage page) {
+		return (WebApplicationContext) page.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+	}
 	public WebApplicationContext getWebApplicatioonContext() {
-		return (WebApplicationContext) getPage().getRequest().getSession().getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+		return getWebApplicationContext(getPage()); 
 	}
 
 	public Object getBean(String beanName) {

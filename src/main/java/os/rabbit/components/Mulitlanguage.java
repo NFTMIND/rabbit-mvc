@@ -25,7 +25,7 @@ public class Mulitlanguage extends Component {
 				public void render(PrintWriter writer) {
 					
 					String word = getTag().getAttribute(attrName);
-					String rs = transalte(word, getSelectedLocale());
+					String rs = transalte(word, getLocale());
 					if (rs == null) {
 						writer.write(word);
 						return;
@@ -38,14 +38,14 @@ public class Mulitlanguage extends Component {
 			new BodyModifier(this, new IRender() {
 				@Override
 				public void render(PrintWriter writer) {
-					if (getSelectedLocale().equals("zh_TW")) {
+					if (getLocale().equals("zh_TW")) {
 						writer.write(Mulitlanguage.this.getTag().getBody());
 						return;
 					}
 					try {
 						if (getTag().hasBody()) {
 							String word = getTag().getTemplate().substring(getTag().getBodyStart(), getTag().getBodyEnd());
-							String rs = transalte(word, getSelectedLocale());
+							String rs = transalte(word, getLocale());
 
 							if (rs == null) {
 								// super.renderComponent(writer);

@@ -34,6 +34,7 @@ public class RabbitServlet extends HttpServlet {
 	private String encoding = "utf-8";
 	private PageFactory pageFactory;
 
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -47,6 +48,7 @@ public class RabbitServlet extends HttpServlet {
 
 	private static String resourceDir = "/rbt";
 
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
@@ -63,6 +65,10 @@ public class RabbitServlet extends HttpServlet {
 
 				}
 				req.setAttribute("KEY_VALUE_PROVIDER", provider);
+			}
+			String locale = (String)provider.get("rbtLocale");
+			if(locale != null) {
+				req.getSession().setAttribute("locale", locale);
 			}
 
 			String contextPath = req.getContextPath();

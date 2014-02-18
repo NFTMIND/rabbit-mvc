@@ -36,7 +36,7 @@ public class PageFactory {
 
 			XMLParser parser = new XMLParser(in, encoding);
 			Tag tag = parser.parse();
-			WebPage page = new WebPage(tag);
+			WebPage page = new WebPage(context, tag);
 
 			// List<Component> pageInjectComps = page.getPageInjectComponents();
 			// for (final Component cmp : pageInjectComps) {
