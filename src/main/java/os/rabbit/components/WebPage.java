@@ -520,7 +520,7 @@ public class WebPage extends Component {
 
 	public void setRedirect(String url) {
 		getRequest().setAttribute("RBT_REDIRECT_URL", url);
-		throw new RenderInterruptedException();
+		//throw new RenderInterruptedException();
 	}
 
 	public String getRedirect() {

@@ -124,37 +124,15 @@ public class RabbitServlet extends HttpServlet {
 				resp.setContentType("text/html");
 				if (page != null) {
 					page.requestStart(req, resp);
-					// page.setRequestURI(uri);
+					//page.setRequestURI(uri);
 					try {
 						if (!page.isAuthorized()) {
 							String unauthorizedURI = getInitParameter("unauthorized");
 							if (unauthorizedURI != null) {
-
-								StringBuilder builder = new StringBuilder();
-
-								Map<String, String[]> map = req.getParameterMap();
-								for (String key : map.keySet()) {
-
-									String[] values = map.get(key);
-									for(String value : values) {
-										builder.append(key);
-										builder.append("=");
-										builder.append(value);
-									}
-								}
-								if (builder.length() > 0) {
-									builder.deleteCharAt(builder.length() - 1);
-								}
-								String unauthorizedURL = uri;
-								if (builder.length() > 0)
-									if (uri.indexOf("?") == -1) {
-
-										unauthorizedURL = uri + "?" + builder.toString();
-									} else {
-
-										unauthorizedURL = uri + "&" + builder.toString();
-									}
-								req.setAttribute("UNAUTHORIZED_URI", unauthorizedURL);
+								String currentURI = buildCurrentURI(req);
+								
+								req.setAttribute("UNAUTHORIZED_URI", currentURI);
+					
 								req.getRequestDispatcher(unauthorizedURI).forward(req, resp);
 
 								return;
@@ -172,6 +150,7 @@ public class RabbitServlet extends HttpServlet {
 						writer.flush();
 						resp.getWriter().write(page.getWriter().toString());
 					} catch (RenderInterruptedException e) {
+						e.printStackTrace();
 						if (page.getRedirect() != null) {
 							resp.sendRedirect(page.getRedirect());
 						}
@@ -191,31 +170,9 @@ public class RabbitServlet extends HttpServlet {
 						if (!page.isAuthorized()) {
 							String unauthorizedURI = getInitParameter("unauthorized");
 							if (unauthorizedURI != null) {
-								StringBuilder builder = new StringBuilder();
-
-								Map<String, String[]> map = req.getParameterMap();
-								for (String key : map.keySet()) {
-
-									String[] values = map.get(key);
-									for(String value : values) {
-										builder.append(key);
-										builder.append("=");
-										builder.append(value);
-									}
-								}
-								if (builder.length() > 0) {
-									builder.deleteCharAt(builder.length() - 1);
-								}
-								String unauthorizedURL = uri;
-								if (builder.length() > 0)
-									if (uri.indexOf("?") == -1) {
-
-										unauthorizedURL = uri + "?" + builder.toString();
-									} else {
-
-										unauthorizedURL = uri + "&" + builder.toString();
-									}
-								req.setAttribute("UNAUTHORIZED_URI", unauthorizedURL);
+								String currentURI = buildCurrentURI(req);
+								
+								req.setAttribute("UNAUTHORIZED_URI", currentURI);
 								req.getRequestDispatcher(unauthorizedURI).forward(req, resp);
 
 								return;
@@ -235,10 +192,12 @@ public class RabbitServlet extends HttpServlet {
 							logger.info("did not found Trigger '" + triggerId + "'");
 							ajaxLogger.append("網頁操作失敗，可能是網頁已經過期，請嘗試重新整理");
 						}
-
+						if(page.getRedirect() != null) {
+							throw new RenderInterruptedException();
+						}
 						if (rbtType.equals("INVOKE")) {
 							resp.setContentType("text/html");
-
+			
 							PrintWriter writer = new PrintWriter(page.getWriter());
 							page.render(writer);
 							if (page.getRedirect() != null) {
@@ -291,6 +250,49 @@ public class RabbitServlet extends HttpServlet {
 		}
 		resp.flushBuffer();
 
+	}
+
+	private String buildCurrentURI(HttpServletRequest req) {
+		String uri = req.getRequestURI();
+
+		if (req.getAttribute("javax.servlet.include.request_uri") != null) {
+			uri = (String) req.getAttribute("javax.servlet.include.request_uri");
+
+		}
+		
+		StringBuilder builder = new StringBuilder();
+
+		Map<String, String[]> map = req.getParameterMap();
+		for (String key : map.keySet()) {
+
+			String[] values = map.get(key);
+			for(String value : values) {
+				builder.append(key);
+				builder.append("=");
+				builder.append(value);
+			}
+		}
+		if (builder.length() > 0) {
+			builder.deleteCharAt(builder.length() - 1);
+		}
+		String currentURI = uri;
+		String definitionName = (String)req.getAttribute("os.rabbit.tiles.uri");
+		
+		if(definitionName != null) {
+			currentURI = definitionName;
+
+		}
+		//System.out.println(definitionName);
+		if (builder.length() > 0)
+			if (currentURI.indexOf("?") == -1) {
+
+				currentURI = currentURI + "?" + builder.toString();
+			} else {
+
+				currentURI = currentURI + "&" + builder.toString();
+			}
+		
+		return currentURI;
 	}
 
 	private void updateValue(final IKeyValueProvider keyValueProvider, WebPage page) throws UnsupportedEncodingException {

@@ -102,13 +102,15 @@ public class RabbitTilesServlet extends HttpServlet {
 			
 			updateTilesDefinition();
 		}
-		
-		String resourcePath = req.getRequestURI().substring(req.getContextPath().length(), req.getRequestURI().length());
-
+		String uri = req.getRequestURI();
+		String resourcePath = uri.substring(req.getContextPath().length(), uri.length());
+		req.setAttribute("os.rabbit.tiles.uri", uri);
 		RabbitTilesDefinition def = definitionMap.get(resourcePath);
+		System.out.println("URI:" + uri);
 		if (def != null) {
 			RequestDispatcher dispatcher = req.getRequestDispatcher(def.getTemplate());
-			req.setAttribute("os.rabbit.uri", req.getRequestURI());
+			req.setAttribute("os.rabbit.uri", uri);
+			
 			req.setAttribute(RABBIT_TILES_DEFINITION, def);
 			
 			
