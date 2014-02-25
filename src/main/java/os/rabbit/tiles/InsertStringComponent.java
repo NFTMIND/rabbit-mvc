@@ -17,6 +17,7 @@ public class InsertStringComponent extends Component {
 	public void renderComponent(final PrintWriter writer) {
 	
 		RabbitTilesDefinition definition = (RabbitTilesDefinition) getPage().getRequest().getAttribute(RabbitTilesServlet.RABBIT_TILES_DEFINITION);
+	
 		String value = definition.getAttributeValue(getTag().getAttribute("rabbit:id"));
 		if(value != null)
 			writer.write(value);

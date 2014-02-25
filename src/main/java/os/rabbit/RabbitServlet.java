@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,8 @@ import os.rabbit.components.form.FormComponent;
 
 public class RabbitServlet extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(RabbitServlet.class);
+	public static final String UNAUTHORIZED_URI = "UNAUTHORIZED_URI";
+	
 	/**
 	 * 
 	 */
@@ -33,7 +36,7 @@ public class RabbitServlet extends HttpServlet {
 
 	private String encoding = "utf-8";
 	private PageFactory pageFactory;
-
+	
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -114,7 +117,7 @@ public class RabbitServlet extends HttpServlet {
 				return;
 
 			}
-
+	
 			WebPage page = pageFactory.get(path, (String) req.getSession().getAttribute("locale"));
 
 			resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -132,7 +135,7 @@ public class RabbitServlet extends HttpServlet {
 								String currentURI = buildCurrentURI(req);
 								
 								req.setAttribute("UNAUTHORIZED_URI", currentURI);
-					
+							
 								req.getRequestDispatcher(unauthorizedURI).forward(req, resp);
 
 								return;
@@ -150,7 +153,7 @@ public class RabbitServlet extends HttpServlet {
 						writer.flush();
 						resp.getWriter().write(page.getWriter().toString());
 					} catch (RenderInterruptedException e) {
-						e.printStackTrace();
+						
 						if (page.getRedirect() != null) {
 							resp.sendRedirect(page.getRedirect());
 						}
