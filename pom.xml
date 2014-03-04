@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tw.org.cmex.java.commons</groupId>
 	<artifactId>rabbit</artifactId>
-	<version>4.4.5</version>
+	<version>4.4.8</version>
 
 	<scm>
 		<developerConnection>scm:git:ssh://git.cmex.org.tw/git/java/commons/rabbit.git</developerConnection>

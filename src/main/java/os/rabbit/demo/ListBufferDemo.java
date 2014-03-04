@@ -16,13 +16,18 @@ public class ListBufferDemo extends SpringBeanSupportComponent {
 		super(tag);
 	
 	}
+	
+	@Override
+	protected void initial() {
+		listBuffer.setEmptyDataMessage("目前尚無資料");
+	}
 
 	
 	@Override
 	protected void beforeRender() {
-		for(int loop = 0; loop < 100; loop++) {
-			lblNumber.setValue(loop);
-			listBuffer.flush();
-		}
+//		for(int loop = 0; loop < 100; loop++) {
+//			lblNumber.setValue(loop);
+//			listBuffer.flush();
+//		}
 	}
 }

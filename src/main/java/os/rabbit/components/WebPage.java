@@ -172,9 +172,10 @@ public class WebPage extends Component {
 
 		}
 
-		// String contextPath = getRequest().getContextPath();
-		writer.println("<script src=\"" + getRelativelyRoot() + "/rbt/jquery-1.8.3.min.js\"></script>");
-		writer.println("<script src=\"" + getRelativelyRoot() + "/rbt/rabbit.js\"></script>");
+		// String contextPath = getRelativelyRoot();
+		 String contextPath = getRequest().getContextPath();
+		writer.println("<script src=\"" + contextPath + "/rbt/jquery-1.11.0.min.js\"></script>");
+		writer.println("<script src=\"" + contextPath + "/rbt/rabbit.js\"></script>");
 
 		for (IRender render : scriptImports.values()) {
 			writer.print("<script src=\"");

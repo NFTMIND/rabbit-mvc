@@ -207,21 +207,26 @@ public class Component implements IModifier {
 	}
 
 	public String getRenderId() {
-
-		int v = getRenderIndex();
-
-		return "r" + v;
-	}
-
-	public int getRenderIndex() {
-		Integer returnVal = (Integer) getAttribute("renderIndex");
-		if (returnVal == null) {
-			returnVal = getPage().generateRenderIndex();
-			setAttribute("renderIndex", returnVal);
+		String returnVal = (String) getAttribute("renderId");
+		if(returnVal == null) {
+			setAttribute("renderId", getId());
+			return getId();
 		}
-
+		
+		
+		//int v = getRenderIndex();
 		return returnVal;
 	}
+
+//	public int getRenderIndex() {
+//		Integer returnVal = (Integer) getAttribute("renderIndex");
+//		if (returnVal == null) {
+//			returnVal = getPage().generateRenderIndex();
+//			setAttribute("renderIndex", returnVal);
+//		}
+//
+//		return returnVal;
+//	}
 
 	public Map<String, String> getLanguageTable(String language) {
 		HashMap<String, String> table = languageWordMap.get(language);
@@ -568,7 +573,7 @@ public class Component implements IModifier {
 	@Override
 	public void render(PrintWriter writer) {
 		if (isVisible()) {
-			getRenderIndex();
+			//getRenderIndex();
 
 
 
@@ -601,13 +606,14 @@ public class Component implements IModifier {
 				listener.afterRender();
 			}
 			
-			
-			setAttribute("renderIndex", getPage().generateRenderIndex());
-		
 
 		} else {
 			writer.write("<span id=\"" + getId() + "\" />");
 		}
+	}
+	
+	public void updateRenderId() {
+		setAttribute("renderId", "r" + getPage().generateRenderIndex());
 	}
 
 	public void repaint() {

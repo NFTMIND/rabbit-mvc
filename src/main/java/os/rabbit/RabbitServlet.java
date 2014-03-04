@@ -55,7 +55,9 @@ public class RabbitServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-
+			//resp.setHeader("X-Frame-Options", "DENY");
+			
+			
 			req.setCharacterEncoding(encoding);
 			resp.setCharacterEncoding(encoding);
 
