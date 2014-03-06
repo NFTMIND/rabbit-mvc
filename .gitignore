@@ -2,3 +2,4 @@ target
 WebContent
 build.xml
 /release
+/WEB-INF

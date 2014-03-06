@@ -7,12 +7,13 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +29,12 @@ import os.rabbit.components.form.FormComponent;
 public class RabbitServlet extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(RabbitServlet.class);
 	public static final String UNAUTHORIZED_URI = "UNAUTHORIZED_URI";
-	
+	public static final HashMap<String, Locale> LOCALE_MAP = new HashMap<String, Locale>();
+	static {
+		for(Locale locale : Locale.getAvailableLocales()) {
+			LOCALE_MAP.put(locale.toString(), locale);
+		}
+	}
 	/**
 	 * 
 	 */
@@ -71,9 +77,11 @@ public class RabbitServlet extends HttpServlet {
 				}
 				req.setAttribute("KEY_VALUE_PROVIDER", provider);
 			}
-			String locale = (String)provider.get("rbtLocale");
-			if(locale != null) {
-				req.getSession().setAttribute("locale", locale);
+
+			String rbtLocale = (String)provider.get("rbtLocale");
+			if(rbtLocale != null) {
+				Locale curr = LOCALE_MAP.get(rbtLocale);
+				req.getSession().setAttribute("locale", curr);
 			}
 
 			String contextPath = req.getContextPath();
@@ -120,7 +128,7 @@ public class RabbitServlet extends HttpServlet {
 
 			}
 	
-			WebPage page = pageFactory.get(path, (String) req.getSession().getAttribute("locale"));
+			WebPage page = pageFactory.get(path, (Locale) req.getSession().getAttribute("locale"));
 
 			resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 			resp.setHeader("Pragma", "no-cache");

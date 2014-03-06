@@ -11,22 +11,21 @@ public class ButtonDemo extends Component {
 	private Label label;
 	private TextBox input;
 	private Button button;
+
 	public ButtonDemo(Tag tag) {
 		super(tag);
 	}
+
 	@Override
 	protected void initial() {
 		button.addUpdateComponent(input);
-	}
-	
-	@Override
-	protected void afterBuild() {
 		button.addButtonListener(new IButtonListener() {
-			
+
 			@Override
 			public void click() {
 				label.setValue(input.getValue());
 			}
 		});
 	}
+
 }

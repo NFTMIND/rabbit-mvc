@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,6 @@ import os.rabbit.IModifier;
 import os.rabbit.IRender;
 import os.rabbit.IRequestCycleListener;
 import os.rabbit.ITrigger;
-import os.rabbit.RenderInterruptedException;
 import os.rabbit.parser.Range;
 import os.rabbit.parser.Tag;
 
@@ -55,10 +56,13 @@ public class WebPage extends Component {
 	private HashMap<String, IRender> scriptImports = new HashMap<String, IRender>();
 	private HashMap<String, IRender> cssImports = new HashMap<String, IRender>();
 	private ServletContext context;
+
 	public WebPage(ServletContext context, final Tag tag) {
 		super(tag);
 		this.context = context;
+		
 		initChildrenComponent(this, this, tag);
+		initELComponent(tag);
 		reverseVisit(new IComponentVisitor() {
 
 			@Override
@@ -69,11 +73,13 @@ public class WebPage extends Component {
 			}
 		});
 		final Tag headTag = findHead(tag);
+
 		if (headTag != null) {
 			final Tag scriptOrLinkOrStyleTag = findScriptOrLinkOrStyleTag(headTag);
 			if (scriptOrLinkOrStyleTag == null) {
 				addModifier(new HeadAppendModifier(headTag));
 			} else {
+
 				addModifier(new IModifier() {
 
 					@Override
@@ -83,7 +89,6 @@ public class WebPage extends Component {
 
 					@Override
 					public Range getRange() {
-						// TODO Auto-generated method stub
 						return new Range(scriptOrLinkOrStyleTag.getStart(), scriptOrLinkOrStyleTag.getStart());
 					}
 				});
@@ -107,6 +112,7 @@ public class WebPage extends Component {
 		}
 
 	}
+
 	public ServletContext getServletContext() {
 		return context;
 	}
@@ -173,7 +179,7 @@ public class WebPage extends Component {
 		}
 
 		// String contextPath = getRelativelyRoot();
-		 String contextPath = getRequest().getContextPath();
+		String contextPath = getRequest().getContextPath();
 		writer.println("<script src=\"" + contextPath + "/rbt/jquery-1.11.0.min.js\"></script>");
 		writer.println("<script src=\"" + contextPath + "/rbt/rabbit.js\"></script>");
 
@@ -225,6 +231,30 @@ public class WebPage extends Component {
 		scripts.put(name, script);
 	}
 
+	private void initELComponent(Tag tag) {
+		String template = tag.getTemplate();
+		Pattern pattern = Pattern.compile("\\$\\{[^\\}]*\\}");
+		Matcher matcher = pattern.matcher(template);
+		int end = 0;
+		while(matcher.find(end)) {
+			String el = template.substring(matcher.start() + 2, matcher.end() - 1);
+			String name = null;
+			String expression = null;
+			int i = el.indexOf(".");
+			if(i == -1) {
+				name = el;
+				expression = null;
+			} else {
+				name = el.substring(0, i);
+				expression = el.substring(i + 1, el.length());
+			}
+		
+
+			dispatchELComponent(name, expression, matcher.start(), matcher.end());
+			end = matcher.end();
+		}	
+	}
+
 	private void initChildrenComponent(Component container, Component parent, Tag tag) {
 		initChildrenComponent("", container, parent, tag);
 	}
@@ -239,16 +269,15 @@ public class WebPage extends Component {
 		for (Tag eachTag : tag.getChildrenTags()) {
 
 			String rabbitId = eachTag.getAttribute("rabbit:id");
-	
+
 			String rabbitClass = eachTag.getAttribute("rabbit:class");
 			if (rabbitClass != null) {
 				try {
-				
+
 					Component newParentComponent = createComponentByClassName(rabbitClass, eachTag);
 					newParentComponent.setContainer(true);
 					parent.addChild(newParentComponent);
 
-				
 					initChildrenComponent(space + "	", newParentComponent, newParentComponent, eachTag);
 
 				} catch (Exception e) {
@@ -299,7 +328,7 @@ public class WebPage extends Component {
 
 	}
 
-	private Field getField(Class<? extends Component> c, String name) {
+	public static Field getField(Class<? extends Component> c, String name) {
 		Field field = null;
 		try {
 			field = c.getDeclaredField(name);
@@ -310,7 +339,7 @@ public class WebPage extends Component {
 		return field;
 	}
 
-	private Field searchField(Class<? extends Component> c, String name) {
+	public static Field searchField(Class<? extends Component> c, String name) {
 		Field field = getField(c, name);
 		if (field == null) {
 			Class<? extends Component> sc = (Class<? extends Component>) c.getSuperclass();
@@ -338,7 +367,7 @@ public class WebPage extends Component {
 			Field field = searchField(classInstance, name);
 
 			if (field == null) {
-				logger.warn("field \""+name+"\" couldn't be found.");
+				logger.warn("field \"" + name + "\" couldn't be found.");
 				return null;
 			}
 
@@ -521,7 +550,7 @@ public class WebPage extends Component {
 
 	public void setRedirect(String url) {
 		getRequest().setAttribute("RBT_REDIRECT_URL", url);
-		//throw new RenderInterruptedException();
+		// throw new RenderInterruptedException();
 	}
 
 	public String getRedirect() {

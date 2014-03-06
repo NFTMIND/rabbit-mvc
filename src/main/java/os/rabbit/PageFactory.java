@@ -7,16 +7,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 
-import os.rabbit.components.Component;
 import os.rabbit.components.WebPage;
-import os.rabbit.parser.Context;
-import os.rabbit.parser.ITagStructureVisitor;
 import os.rabbit.parser.Tag;
 import os.rabbit.parser.XMLParser;
 
@@ -105,7 +102,7 @@ public class PageFactory {
 		return null;
 	}
 
-	public WebPage get(String path, String locale) {
+	public WebPage get(String path, Locale locale) {
 		int dot = path.lastIndexOf(".");
 
 		String pathWithoutExt = path.substring(0, dot);

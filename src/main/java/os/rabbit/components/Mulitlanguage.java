@@ -1,6 +1,7 @@
 package os.rabbit.components;
 
 import java.io.PrintWriter;
+import java.util.Locale;
 
 import os.rabbit.IRender;
 import os.rabbit.modifiers.AttributeModifier;
@@ -38,7 +39,7 @@ public class Mulitlanguage extends Component {
 			new BodyModifier(this, new IRender() {
 				@Override
 				public void render(PrintWriter writer) {
-					if (getLocale().equals("zh_TW")) {
+					if (getLocale() == Locale.TAIWAN) {
 						writer.write(Mulitlanguage.this.getTag().getBody());
 						return;
 					}

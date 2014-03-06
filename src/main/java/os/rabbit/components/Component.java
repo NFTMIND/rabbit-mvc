@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -24,6 +26,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 
 import os.rabbit.Help;
 import os.rabbit.IModifier;
@@ -36,6 +39,7 @@ import os.rabbit.parser.Tag;
 import os.rabbit.parser.XMLParser;
 
 public class Component implements IModifier {
+	private static Logger logger = Logger.getLogger(Component.class);
 
 	private LinkedList<Component> childrens = new LinkedList<Component>();
 	private LinkedList<IModifier> modifiers = new LinkedList<IModifier>();
@@ -48,8 +52,6 @@ public class Component implements IModifier {
 
 	private String id;
 	private static int serial;
-
-
 
 	public Component(Tag tag) {
 		this.tag = tag;
@@ -79,7 +81,7 @@ public class Component implements IModifier {
 			// attribute:value,title
 			// body
 			//
-	
+
 			String translation = tag.getAttribute("rabbit:translation");
 			if (translation.startsWith("attribute")) {
 				String sources = translation.substring(10, translation.length());
@@ -173,13 +175,61 @@ public class Component implements IModifier {
 		});
 	}
 
-	private static HashMap<String, HashMap<String, String>> languageWordMap = new HashMap<String, HashMap<String, String>>();
+	protected void dispatchELComponent(String name, String expression, int start, int end) {
+		for (Component child : getChildrens()) {
+			if (child.getTag().getStart() <= start && child.getTag().getEnd() >= end) {
+				child.dispatchELComponent(name, expression, start, end);
+				return;
+			}
+		}
 
-	public String getLocale() {
+		Component container = null;
+		if (isContainer()) {
+			container = this;
+		} else {
+			container = getContainer();
+		}
 
-		String selectedLocale = (String) getPage().getRequest().getSession().getAttribute("locale");
+		if (container == null)
+			return;
+
+		Field field = WebPage.searchField(container.getClass(), name);
+
+		if (field == null) {
+			logger.warn("field \"" + name + "\" couldn't be found.");
+			return;
+		}
+
+		Class<?> fieldClass = field.getType();
+		field.setAccessible(true);
+		try {
+
+			ELComponent elCmp = null;
+			Object object = field.get(container);
+			if (object == null) {
+				elCmp = new ELComponent(start, end, name, expression);
+				field.set(container, elCmp);
+			} else {
+				elCmp = (ELComponent) object;
+			}
+
+			ELModifier modifier = new ELModifier(elCmp, start, end, expression);
+			addModifier(modifier);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static HashMap<Locale, HashMap<String, String>> languageWordMap = new HashMap<Locale, HashMap<String, String>>();
+
+	public Locale getLocale() {
+
+		Locale selectedLocale = (Locale) getPage().getRequest().getSession().getAttribute("locale");
 		if (selectedLocale == null) {
-			selectedLocale = getPage().getRequest().getLocale().toString();
+			selectedLocale = getPage().getRequest().getLocale();
 		}
 		return selectedLocale;
 
@@ -208,27 +258,14 @@ public class Component implements IModifier {
 
 	public String getRenderId() {
 		String returnVal = (String) getAttribute("renderId");
-		if(returnVal == null) {
+		if (returnVal == null) {
 			setAttribute("renderId", getId());
 			return getId();
 		}
-		
-		
-		//int v = getRenderIndex();
 		return returnVal;
 	}
 
-//	public int getRenderIndex() {
-//		Integer returnVal = (Integer) getAttribute("renderIndex");
-//		if (returnVal == null) {
-//			returnVal = getPage().generateRenderIndex();
-//			setAttribute("renderIndex", returnVal);
-//		}
-//
-//		return returnVal;
-//	}
-
-	public Map<String, String> getLanguageTable(String language) {
+	public Map<String, String> getLanguageTable(Locale language) {
 		HashMap<String, String> table = languageWordMap.get(language);
 		if (table == null) {
 			String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + language + ".xml");
@@ -257,7 +294,7 @@ public class Component implements IModifier {
 		return table;
 	}
 
-	public void save(String locale) {
+	public void save(Locale locale) {
 
 		String dir = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages");
 		File dirFile = new File(dir);
@@ -297,8 +334,8 @@ public class Component implements IModifier {
 		return transalte(word, getLocale());
 	}
 
-	public String transalte(String word, String targetLanguage) {
-		
+	public String transalte(String word, Locale targetLanguage) {
+
 		String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + targetLanguage + ".xml");
 
 		Map<String, String> map = getLanguageTable(targetLanguage);
@@ -308,12 +345,14 @@ public class Component implements IModifier {
 
 			return translation;
 		} else {
-			if(true) return word;
+			if (true)
+				return word;
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-			int dash = targetLanguage.indexOf("_");
-			String l = targetLanguage;
+			String l = targetLanguage.toString();
+			int dash = l.indexOf("_");
+
 			if (dash != -1) {
-				l = targetLanguage.substring(0, dash);
+				l = l.substring(0, dash);
 			}
 			try {
 
@@ -380,19 +419,19 @@ public class Component implements IModifier {
 		return getPage().getRequest().getAttribute(getId() + "_ATTR$" + name);
 	}
 
-//	private void setTagAttributeModifier(final String name, boolean on) {
-//		if (on) {
-//			if (!attributeModifierMap.containsKey(name)) {
-//				
-//			}
-//		} else {
-//			AttributeModifier modifier = attributeModifierMap.remove(name);
-//			removeModifier(modifier);
-//		}
-//	}
+	// private void setTagAttributeModifier(final String name, boolean on) {
+	// if (on) {
+	// if (!attributeModifierMap.containsKey(name)) {
+	//
+	// }
+	// } else {
+	// AttributeModifier modifier = attributeModifierMap.remove(name);
+	// removeModifier(modifier);
+	// }
+	// }
 
 	public void setTagAttribute(final String name, String value) {
-		if(!attributeModifierMap.containsKey(name)) {
+		if (!attributeModifierMap.containsKey(name)) {
 			AttributeModifier modifier = new AttributeModifier(this, name, new IRender() {
 				@Override
 				public void render(PrintWriter writer) {
@@ -414,8 +453,7 @@ public class Component implements IModifier {
 			};
 			attributeModifierMap.put(name, modifier);
 		}
-		
-		
+
 		if (value != null)
 			getPage().getRequest().setAttribute("RBT_ATTR_MODIFIER$" + getId() + "$" + name, value);
 		else
@@ -573,11 +611,8 @@ public class Component implements IModifier {
 	@Override
 	public void render(PrintWriter writer) {
 		if (isVisible()) {
-			//getRenderIndex();
+			// getRenderIndex();
 
-
-
-	
 			for (IComponentListener listener : componentListenerList) {
 				listener.beforeRender();
 			}
@@ -601,17 +636,16 @@ public class Component implements IModifier {
 				writer.write("<span id=\"" + getId() + "\" />");
 			}
 			afterRender();
-		
+
 			for (IComponentListener listener : componentListenerList) {
 				listener.afterRender();
 			}
-			
 
 		} else {
 			writer.write("<span id=\"" + getId() + "\" />");
 		}
 	}
-	
+
 	public void updateRenderId() {
 		setAttribute("renderId", "r" + getPage().generateRenderIndex());
 	}
