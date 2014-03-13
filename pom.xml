@@ -1,20 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<groupId>tw.org.cmex.misc.pom</groupId>
-		<artifactId>pom-java</artifactId>
-		<version>1.2</version>
-	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>tw.org.cmex.java.commons</groupId>
+	<groupId>idv.teco</groupId>
 	<artifactId>rabbit</artifactId>
-	<version>4.4.8</version>
-
-	<scm>
-		<developerConnection>scm:git:ssh://git.cmex.org.tw/git/java/commons/rabbit.git</developerConnection>
-	</scm>
-
+	<version>4.4.9</version>
+	<!-- <scm> <developerConnection>scm:git:ssh://git.cmex.org.tw/git/java/commons/rabbit.git</developerConnection> 
+		</scm> -->
 	<build>
 		<plugins>
 			<plugin>
@@ -113,6 +105,16 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-extras</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.8</version>
 		</dependency>
 
 	</dependencies>
