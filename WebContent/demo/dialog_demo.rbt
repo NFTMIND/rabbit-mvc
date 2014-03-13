@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="./../rbt/jqueryui/themes/base/jquery-ui.min.css" rel="stylesheet" type="text/css">
+
+</link>
+
+<script src="./../rbt/jqueryui/jquery-ui.min.js"></script>
+<script>
+	$(function() {
+    $( "#abc" ).dialog({
+		autoOpen:false,dialogClass: "no-close"
+	});
+  });
+</script>
+
+</head>
+
+<body>
+<div id="abc" title="hello" modeal="true">
+asdfdsafd
+</div>
+<input type="button" name="button" id="button" value="Button" onclick="$(abc).dialog('open')" />
+</body>
+</html>

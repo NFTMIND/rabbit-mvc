@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Form Demo</title>
+</head>
+
+<body rabbit:class="os.rabbit.demo.FormDemo">
+<span rabbit:id="msg">訊息區</span>
+<form rabbit:id="form" method="post">
+<table border="0">
+  <tr>
+    <td align="right">TextBox</td>
+    <td><input type="text" rabbit:id="txtBox" /></td>
+  </tr>
+  <tr>
+    <td align="right">BooleanCheckBox</td>
+    <td><input type="checkbox" rabbit:id="booleanCheckBox" /></td>
+  </tr>
+  <tr>
+    <td align="right">ComboBox</td>
+    <td><select rabbit:id="checkBox" name="select" id="select">
+    </select></td>
+  </tr>
+  <tr>
+    <td align="right">CheckBox/CheckBoxGroup</td>
+    <td rabbit:id="checkBoxGroup">
+<input type="checkbox" rabbit:id="checkBox1" />
+<input type="checkbox" rabbit:id="checkBox2" />
+<input type="checkbox" rabbit:id="checkBox3" /></td>
+  </tr>
+  <tr>
+    <td align="right">Radio/RadioGroup</td>
+    <td rabbit:id="radioGroup">
+    
+    <input type="radio" rabbit:id="radio1" value="radio" />
+      <input type="radio" rabbit:id="radio2" value="radio" />
+      <input type="radio" rabbit:id="radio3" value="radio" />
+      </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><input type="submit" value="送出" /></td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Script Event Callback Demo</title>
+</head>
+
+<body rabbit:class="os.rabbit.demo.ScriptEventCallbackDemo">
+	<span style="color: #FF0000" rabbit:id="behaviorLabel"></span>
+	<br />
+	<div rabbit:id="mouseArea" style="width:200px; height:200px; background-color:#CCC">
+		This is mouse area, when you move the mouse over or out here, the server callback method will be invoked.
+	</div>
+</body>
+</html>

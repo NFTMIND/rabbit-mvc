@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Callback Demo</title>
+</head>
+
+<body rabbit:class="os.rabbit.demo.CallbackDemo">
+	We have three kind of button to show different render result of callback.
+	<br /> generate 1:URLInvokeCallback
+	<br /> generate 2:ScriptInvokeCallback
+	<br /> generate 3:AjaxInvokeCallback
+	<br />
+	<br /> ${code}
+	<br />
+	<input type="button" value="URL" rabbit:id="urlBtn" />
+	<input type="button" value="Script" rabbit:id="scriptBtn" />
+	<input type="button" value="AJAX" rabbit:id="ajaxBtn" />
+
+</body>
+</html>
