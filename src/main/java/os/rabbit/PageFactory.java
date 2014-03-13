@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
 
 import org.apache.log4j.Logger;
 
@@ -19,13 +20,16 @@ import os.rabbit.parser.XMLParser;
 
 public class PageFactory {
 	private static final Logger logger = Logger.getLogger(PageFactory.class);
-	private ServletContext context;
+
+	private HttpServlet servlet;
 	private HashMap<String, StorageWebPage> pageMap = new HashMap<String, StorageWebPage>();
 	private String encoding = "utf-8";
 
-	public PageFactory(ServletContext context, String encoding) {
+	public PageFactory(HttpServlet servlet, String encoding) {
+		this.servlet = servlet;
 		this.encoding = encoding;
-		this.context = context;
+	
+	
 	}
 
 	private StorageWebPage createWebPage(InputStream in, long lastModified) {
@@ -33,7 +37,7 @@ public class PageFactory {
 
 			XMLParser parser = new XMLParser(in, encoding);
 			Tag tag = parser.parse();
-			WebPage page = new WebPage(context, tag);
+			WebPage page = new WebPage(servlet, tag);
 
 			// List<Component> pageInjectComps = page.getPageInjectComponents();
 			// for (final Component cmp : pageInjectComps) {
@@ -90,7 +94,7 @@ public class PageFactory {
 
 	private StorageWebPage createWebPage(String path) {
 		try {
-			String realPath = context.getRealPath(path);
+			String realPath = servlet.getServletContext().getRealPath(path);
 			File file = new File(realPath);
 
 			return createWebPage(new FileInputStream(file), file.lastModified());
@@ -125,7 +129,7 @@ public class PageFactory {
 
 			} else {
 
-				String realPath = context.getRealPath(temp);
+				String realPath = servlet.getServletContext().getRealPath(temp);
 
 				File file = new File(realPath);
 				if (file.exists()) {
@@ -162,7 +166,7 @@ public class PageFactory {
 					e.printStackTrace();
 				}
 			} else {
-				String realPath = context.getRealPath(path);
+				String realPath = servlet.getServletContext().getRealPath(path);
 				File file = new File(realPath);
 				isModified = file.lastModified() != page.lastModified;
 				if (isModified) {

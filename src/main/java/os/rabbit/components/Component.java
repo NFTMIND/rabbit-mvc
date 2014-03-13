@@ -92,7 +92,7 @@ public class Component implements IModifier {
 						public void render(PrintWriter writer) {
 							String value = getTag().getAttribute(attr);
 							if (value != null) {
-								String rs = transalte(getTag().getAttribute(attr), getLocale());
+								String rs = translate(getTag().getAttribute(attr), getLocale());
 								if (rs != null) {
 									writer.write(rs);
 								} else {
@@ -109,7 +109,7 @@ public class Component implements IModifier {
 						if (getTag().hasBody()) {
 							String body = getTag().getTemplate().substring(getTag().getBodyStart(), getTag().getBodyEnd());
 
-							String rs = transalte(body, getLocale());
+							String rs = translate(body, getLocale());
 							if (rs != null) {
 								writer.write(rs);
 							} else {
@@ -207,7 +207,7 @@ public class Component implements IModifier {
 			ELComponent elCmp = null;
 			Object object = field.get(container);
 			if (object == null) {
-				elCmp = new ELComponent(start, end, name, expression);
+				elCmp = new ELComponent(start, end, name);
 				field.set(container, elCmp);
 			} else {
 				elCmp = (ELComponent) object;
@@ -223,7 +223,7 @@ public class Component implements IModifier {
 
 	}
 
-	private static HashMap<Locale, HashMap<String, String>> languageWordMap = new HashMap<Locale, HashMap<String, String>>();
+	private static HashMap<Locale, Translator> languageWordMap = new HashMap<Locale, Translator>();
 
 	public Locale getLocale() {
 
@@ -265,37 +265,57 @@ public class Component implements IModifier {
 		return returnVal;
 	}
 
-	public Map<String, String> getLanguageTable(Locale language) {
-		HashMap<String, String> table = languageWordMap.get(language);
-		if (table == null) {
-			String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + language + ".xml");
-			table = new HashMap<String, String>();
-			File file = new File(filePath);
+	class Translator {
+		public long lastModified;
+		public HashMap<String, String> table = new HashMap<String, String>();
+
+		public String translate(String value) {
+			return table.get(value);
+		}
+
+	}
+
+	public Translator getLanguageTable(Locale language) {
+		String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + language + ".xml");
+		File file = new File(filePath);
+		Translator translator = languageWordMap.get(language);
+		// HashMap<String, String> table = languageWordMap.get(language);
+		if (translator == null || file.lastModified() != translator.lastModified) {
+			if (translator == null) {
+				translator = new Translator();
+				languageWordMap.put(language, translator);
+			}
+			System.out.println("clear:" + translator.lastModified + "," + file.lastModified());
+			translator.lastModified = file.lastModified();
+			translator.table.clear();
+			
+
+			// table = new HashMap<String, String>();
 			if (file.exists()) {
 				try {
 					XMLParser parser = new XMLParser(filePath, "utf-8");
 					Tag root = parser.parse();
+					if (root != null)
+						for (Tag tag : root.getChildrenTags()) {
+							int start = tag.getBodyStart();
+							int end = tag.getBodyEnd();
+							String target = tag.getTemplate().substring(start, end);
+							String value = tag.getAttribute("value");
 
-					for (Tag tag : root.getChildrenTags()) {
-						int start = tag.getBodyStart();
-						int end = tag.getBodyEnd();
-						String target = tag.getTemplate().substring(start, end);
-						String value = tag.getAttribute("value");
-
-						table.put(value, target);
-					}
+							translator.table.put(value, target);
+						}
 				} catch (Exception e) {
-					e.printStackTrace();
+					// e.printStackTrace();
 				}
 			}
-			languageWordMap.put(language, table);
+			
 		}
 
-		return table;
+		return translator;
 	}
 
-	public void save(Locale locale) {
-
+	public void save(Locale locale, Translator translator) {
+	
 		String dir = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages");
 		File dirFile = new File(dir);
 		if (!dirFile.exists()) {
@@ -305,21 +325,26 @@ public class Component implements IModifier {
 		String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + locale + ".xml");
 
 		try {
-			PrintWriter writer = new PrintWriter(filePath, "utf-8");
+			
+			File file = new File(filePath);
+			PrintWriter writer = new PrintWriter(file, "utf-8");
 
-			Map<String, String> table = getLanguageTable(locale);
-
+		
+		
 			writer.println("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
 			writer.println("<language>");
-			for (String key : table.keySet()) {
-
-				writer.println("	<translation value=\"" + key + "\">" + table.get(key) + "</translation>");
+			for (String key : translator.table.keySet()) {
+			
+				writer.println("	<translation value=\"" + key + "\">" + translator.table.get(key) + "</translation>");
 
 			}
 			writer.println("</language>");
 			writer.flush();
 			writer.close();
-
+			
+			long time = System.currentTimeMillis();
+			translator.lastModified = time;
+			file.setLastModified(time);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -330,23 +355,29 @@ public class Component implements IModifier {
 
 	}
 
-	public String transalte(String word) {
-		return transalte(word, getLocale());
+	public String translate(String word) {
+		return translate(word, getLocale());
 	}
 
-	public String transalte(String word, Locale targetLanguage) {
+	public String translate(String word, Locale targetLanguage) {
 
-		String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + targetLanguage + ".xml");
+		//String filePath = getPage().getRequest().getSession().getServletContext().getRealPath("/WEB-INF/languages/" + targetLanguage + ".xml");
 
-		Map<String, String> map = getLanguageTable(targetLanguage);
+		Translator translator = getLanguageTable(targetLanguage);
 
-		String translation = map.get(word);
+		String translation = translator.translate(word);
 		if (translation != null) {
 
 			return translation;
 		} else {
-			if (true)
+
+			String autoTranslation = getPage().getServletConfig().getInitParameter("auto-translation");
+
+			if (autoTranslation == null)
 				return word;
+			if (!Boolean.parseBoolean(autoTranslation))
+				return word;
+
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			String l = targetLanguage.toString();
 			int dash = l.indexOf("_");
@@ -389,9 +420,11 @@ public class Component implements IModifier {
 				String value = new String(temp.toByteArray(), "utf-8");
 				int end = value.indexOf("\"", 4);
 				value = value.substring(4, end);
-
-				map.put(word, value);
-				save(targetLanguage);
+				
+				translator.table.put(word, value);
+				
+				System.out.println("before save:" + translator+ ":" + translator.table.size());
+				save(targetLanguage, translator);
 
 				return value;
 			} catch (UnsupportedEncodingException e) {
@@ -406,7 +439,7 @@ public class Component implements IModifier {
 			}
 		}
 
-		return null;
+		return translation;
 	}
 
 	private HashMap<String, AttributeModifier> attributeModifierMap = new HashMap<String, AttributeModifier>();

@@ -47,7 +47,7 @@ public class RabbitServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		pageFactory = new PageFactory(getServletContext(), encoding);
+		pageFactory = new PageFactory(this, encoding);
 	}
 
 	@Override

@@ -15,23 +15,15 @@ public class ELModifier implements IModifier {
 		range = new Range(s, e);
 		this.component = component;
 		this.expression = propertyExpression;
-		System.out.println("propertyExpression:" + propertyExpression);
+	
 	}
 
 	@Override
 	public void render(PrintWriter writer) {
-		Object value = component.getValue();
+		Object value = component.getValue(expression);
 		if(value != null) {
-			if(expression == null) {
-				writer.print(value);
-				return;
-			}
+			writer.print(value);
 			
-			try {
-				writer.print(PropertyUtils.getProperty(value, expression));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

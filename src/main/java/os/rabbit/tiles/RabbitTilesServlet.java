@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import os.rabbit.parser.Tag;
 import os.rabbit.parser.XMLParser;
 
+/**
+ * @deprecated
+ * @author Teco
+ *
+ */
 public class RabbitTilesServlet extends HttpServlet {
 
 	@Override

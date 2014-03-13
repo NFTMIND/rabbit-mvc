@@ -3,7 +3,11 @@ package os.rabbit.tiles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+/**
+ * @deprecated
+ * @author Teco
+ *
+ */
 public class RabbitTilesDefinition {
 	private HashMap<String, String> properties = new HashMap<String, String>();
 	private String name;

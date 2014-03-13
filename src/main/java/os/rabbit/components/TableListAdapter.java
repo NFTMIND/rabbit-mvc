@@ -29,7 +29,7 @@ public class TableListAdapter<T> implements IListListener<T> {
 			List<Tag> tds = component.getTag().getChildrenTags();
 			if (tds.size() > 0) {
 
-				writer.write("<tr><td align=\"center\" colspan=\"" + tds.size() + "\">"+component.transalte("目前尚無資料", component.getLocale())+"</td></tr>");
+				writer.write("<tr><td align=\"center\" colspan=\"" + tds.size() + "\">"+component.translate("目前尚無資料", component.getLocale())+"</td></tr>");
 
 			}
 

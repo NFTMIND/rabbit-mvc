@@ -38,6 +38,7 @@ public class FileUploadDemo extends Component {
 
 	@Override
 	protected void afterBuild() {
+	
 		btnDel.setLoadingScreen(true);
 		btnDel.addUpdateComponent(uploadFiles);
 		btnDel.addButtonListener(new IButtonListener() {

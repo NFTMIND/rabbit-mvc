@@ -11,7 +11,9 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,11 +57,11 @@ public class WebPage extends Component {
 	private HashMap<String, IRender> scripts = new HashMap<String, IRender>();
 	private HashMap<String, IRender> scriptImports = new HashMap<String, IRender>();
 	private HashMap<String, IRender> cssImports = new HashMap<String, IRender>();
-	private ServletContext context;
+	private HttpServlet servlet;
 
-	public WebPage(ServletContext context, final Tag tag) {
+	public WebPage(HttpServlet servlet, final Tag tag) {
 		super(tag);
-		this.context = context;
+		this.servlet = servlet;
 		
 		initChildrenComponent(this, this, tag);
 		initELComponent(tag);
@@ -114,7 +116,10 @@ public class WebPage extends Component {
 	}
 
 	public ServletContext getServletContext() {
-		return context;
+		return servlet.getServletContext();
+	}
+	public ServletConfig getServletConfig() {
+		return servlet.getServletConfig();
 	}
 
 	public Tag findScriptOrLinkOrStyleTag(Tag tag) {
@@ -343,10 +348,12 @@ public class WebPage extends Component {
 		Field field = getField(c, name);
 		if (field == null) {
 			Class<? extends Component> sc = (Class<? extends Component>) c.getSuperclass();
-			RabbitContainer container = sc.getAnnotation(RabbitContainer.class);
-			if (container != null) {
+			if(sc != null)
+			//RabbitContainer container = sc.getAnnotation(RabbitContainer.class);
+			//if (container != null) {
 				field = searchField(sc, name);
-			}
+	
+			//}
 
 		}
 		return field;

@@ -18,6 +18,7 @@ public class ButtonDemo extends Component {
 
 	@Override
 	protected void initial() {
+		
 		button.addUpdateComponent(input);
 		button.addButtonListener(new IButtonListener() {
 
@@ -26,6 +27,11 @@ public class ButtonDemo extends Component {
 				label.setValue(input.getValue());
 			}
 		});
+	}
+	@Override
+	protected void afterRender() {
+		// TODO Auto-generated method stub
+		super.afterRender();
 	}
 
 }

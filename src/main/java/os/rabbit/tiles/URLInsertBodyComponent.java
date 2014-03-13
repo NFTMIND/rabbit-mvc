@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import os.rabbit.components.Component;
 import os.rabbit.parser.Tag;
-
+/**
+ * @deprecated
+ * @author Teco
+ *
+ */
 public class URLInsertBodyComponent extends Component {
 
 	public URLInsertBodyComponent(Tag tag) {

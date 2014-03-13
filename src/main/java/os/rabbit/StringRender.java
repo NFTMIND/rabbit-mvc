@@ -13,7 +13,7 @@ public class StringRender implements IRender {
 	}
 	@Override
 	public void render(PrintWriter writer) {
-		String word = page.transalte(value);
+		String word = page.translate(value);
 		writer.write(word);
 	}
 	public String getValue() {

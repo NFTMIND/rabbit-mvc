@@ -36,7 +36,7 @@ public class EmptyListAdapter<T> implements IListListener<T> {
 		if (tagName.equals("TR")) {
 			List<Tag> tds = component.getTag().getChildrenTags();
 			if (tds.size() > 0) {
-				writer.write("<tr><td align=\"center\" colspan=\"" + tds.size() + "\">"+component.transalte(emptyMessage, component.getLocale())+"</td></tr>");
+				writer.write("<tr><td align=\"center\" colspan=\"" + tds.size() + "\">"+component.translate(emptyMessage, component.getLocale())+"</td></tr>");
 			}
 
 			
