@@ -7,7 +7,7 @@
 
 <body>
 <p><a href="#">連結1</a> <a href="#">連結2</a> <a href="#">連結3</a></p>
-<p>&nbsp;</p>
+
 <div rabbit:class="os.rabbit.tiles.InsertBodyComponent" rabbit:id="body">
 test
 </div>
