@@ -96,8 +96,8 @@ public class PageFactory {
 		try {
 			String realPath = servlet.getServletContext().getRealPath(path);
 			File file = new File(realPath);
-
-			return createWebPage(new FileInputStream(file), file.lastModified());
+			if(file.exists())
+				return createWebPage(new FileInputStream(file), file.lastModified());
 
 		} catch (IOException e) {
 			e.printStackTrace();

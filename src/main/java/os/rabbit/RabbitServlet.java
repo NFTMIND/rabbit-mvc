@@ -147,10 +147,12 @@ public class RabbitServlet extends HttpServlet {
 								req.setAttribute("UNAUTHORIZED_URI", currentURI);
 							
 								req.getRequestDispatcher(unauthorizedURI).forward(req, resp);
-
+								
 								return;
 							} else {
-								throw new AuthenticationException();
+								resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+								return;
+								//throw new AuthenticationException();
 							}
 						}
 						updateValue(provider, page);
@@ -172,7 +174,7 @@ public class RabbitServlet extends HttpServlet {
 						page.requestEnd();
 					}
 				} else {
-					resp.sendError(404);
+					resp.sendError(404, uri);
 				}
 			} else if (rbtType.equals("INVOKE") || rbtType.equals("AJAX_INVOKE") || rbtType.equals("INVOKE_WITHOUT_PAGE_RENDER")) {
 
@@ -186,8 +188,9 @@ public class RabbitServlet extends HttpServlet {
 								String currentURI = buildCurrentURI(req);
 								
 								req.setAttribute("UNAUTHORIZED_URI", currentURI);
+						
 								req.getRequestDispatcher(unauthorizedURI).forward(req, resp);
-
+								
 								return;
 							} else {
 								throw new AuthenticationException();
@@ -251,7 +254,7 @@ public class RabbitServlet extends HttpServlet {
 					}
 
 				} else {
-					resp.sendError(404);
+					resp.sendError(404, uri);
 				}
 			}
 		} catch (Exception e) {

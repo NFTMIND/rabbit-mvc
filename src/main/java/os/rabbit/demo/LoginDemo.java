@@ -1,5 +1,7 @@
 package os.rabbit.demo;
 
+import java.util.Enumeration;
+
 import os.rabbit.components.Button;
 import os.rabbit.components.Component;
 import os.rabbit.components.IButtonListener;
@@ -28,8 +30,16 @@ public class LoginDemo extends Component {
 	
 	@Override
 	protected void beforeRender() {
-		String uri = (String) getPage().getRequest().getAttribute("UNAUTHORIZED_URI");
-		backURL.setValue(uri);
+		//javax.servlet.forward.request_uri
+		//javax.servlet.forward.servlet_path
+//		Enumeration<String> enums = getPage().getRequest().getAttributeNames();
+//		while(enums.hasMoreElements()) {
+//			String key = enums.nextElement();
+//			System.out.println(key + " : " + getPage().getRequest().getAttribute(key));
+//		}
+//		String uri = (String) getPage().getRequest().getAttribute("UNAUTHORIZED_URI");
+		
+		backURL.setValue((String)getPage().getRequest().getAttribute("javax.servlet.forward.request_uri"));
 	}
 
 }
