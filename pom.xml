@@ -27,6 +27,15 @@
 		</extensions>
 
 		<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.9</version>
+        <configuration>
+          <username>teco.li.email</username>
+          <password>Yg5xG9kT4gf3</password>
+        </configuration>
+      </plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
