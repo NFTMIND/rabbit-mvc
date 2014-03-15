@@ -1,19 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.kuroshio</groupId>
+	<groupId>com.googlecode.rabbit-mvc</groupId>
 	<artifactId>rabbit</artifactId>
-	<version>4.5.0</version>
+	<version>4.5.0-SNAPSHOT</version>
 	<scm>
 		<developerConnection>scm:git:https://teco.li.email@code.google.com/p/rabbit-mvc/</developerConnection>
 	</scm>
 
 	<distributionManagement>
 		<repository>
-			<id>rabbit</id>
-			<url>scp://www.apollo-chess.com.tw/usr/tomcat/context/gamesite/rabbit/repository</url>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
-
+		<snapshotRepository>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<build>
@@ -27,15 +31,15 @@
 		</extensions>
 
 		<plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-scm-plugin</artifactId>
-        <version>1.9</version>
-        <configuration>
-          <username>teco.li.email</username>
-          <password>Yg5xG9kT4gf3</password>
-        </configuration>
-      </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.9</version>
+				<configuration>
+					<username>teco.li.email</username>
+					<password>Yg5xG9kT4gf3</password>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
