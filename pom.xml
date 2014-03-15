@@ -4,7 +4,7 @@
 	<groupId>com.googlecode.rabbit-mvc</groupId>
 	<artifactId>rabbit</artifactId>
 
-	<version>4.5.4</version>
+	<version>4.5.5-SNAPSHOT</version>
 	<scm>
 		<connection>scm:git:https://teco.li.email:Yg5xG9kT4gf3@code.google.com/p/rabbit-mvc/</connection>
 		<developerConnection>scm:git:https://teco.li.email:Yg5xG9kT4gf3@code.google.com/p/rabbit-mvc/</developerConnection>
