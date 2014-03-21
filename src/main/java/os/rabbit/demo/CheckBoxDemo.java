@@ -6,6 +6,7 @@ import os.rabbit.components.Component;
 import os.rabbit.components.Form;
 import os.rabbit.components.IFormListener;
 import os.rabbit.components.Label;
+import os.rabbit.components.ListBuffer;
 import os.rabbit.components.form.CheckBox;
 import os.rabbit.components.form.CheckBoxGroup;
 import os.rabbit.parser.Tag;
@@ -18,6 +19,8 @@ public class CheckBoxDemo extends Component {
 	private CheckBox checkBox1;
 	private CheckBox checkBox2;
 	private CheckBox checkBox3;
+	private ListBuffer list;
+	private CheckBox forEachCkbx;
 	
 	
 	public CheckBoxDemo(Tag tag) {
@@ -45,6 +48,11 @@ public class CheckBoxDemo extends Component {
 		checkBox1.setValue("Checkbox 1");
 		checkBox2.setValue("Checkbox 2");
 		checkBox3.setValue("Checkbox 3");
+		
+		for(int i = 0; i < 10; i++) {
+			forEachCkbx.setValue("forEachCkbx" + i);
+			list.flush();
+		}
 	}
 
 	
