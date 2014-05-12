@@ -20,6 +20,7 @@ public class ButtonDemo extends Component {
 	protected void initial() {
 		
 		button.addUpdateComponent(input);
+		
 		button.addButtonListener(new IButtonListener() {
 
 			@Override
@@ -30,7 +31,6 @@ public class ButtonDemo extends Component {
 	}
 	@Override
 	protected void afterRender() {
-		// TODO Auto-generated method stub
 		super.afterRender();
 	}
 

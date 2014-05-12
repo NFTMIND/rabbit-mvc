@@ -34,7 +34,7 @@ public class AjaxEditableLabelTester extends Component {
 			
 			@Override
 			public void invoke() {
-				System.out.println(checkBox.getValue());
+			
 			}
 		});
 		modifier.addUpdateComponent(checkBox);
@@ -63,7 +63,7 @@ public class AjaxEditableLabelTester extends Component {
 			
 			@Override
 			public void update(String value) {
-				System.out.println(value);
+			
 			}
 		});
 	}

@@ -9,7 +9,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.log4j.Logger;

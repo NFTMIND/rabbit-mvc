@@ -75,7 +75,7 @@ public class InsertAttributeComponent extends Component {
 					@Override
 					public void write(byte[] b, int off, int len) throws IOException {
 						byteArray.write(b, off, len);
-						System.out.println("write");
+					
 					}
 					@Override
 					public void flush() throws IOException {
@@ -104,7 +104,7 @@ public class InsertAttributeComponent extends Component {
 		Definition definition = container.getDefinition(uri, req);
 		
 		
-		System.out.println(uri + ":" + definition);
+	
 		if(definition != null) {
 			Attribute attr = definition.getAttribute(getId());
 

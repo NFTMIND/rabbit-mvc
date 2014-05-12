@@ -29,7 +29,7 @@ public class IncludeTest extends SpringBeanSupportComponent{
 				getPage().setAttribute("userManagerVisible", true);
 				includeUserManager.setVisible(true);
 				container.repaint();
-				System.out.println("test");
+			
 			}
 		});
 

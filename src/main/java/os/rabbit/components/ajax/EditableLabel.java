@@ -32,7 +32,7 @@ public class EditableLabel extends FormComponent<String> {
 
 			@Override
 			public void invoke() {
-				System.out.println("editablelabel");
+				
 				for (IUpdateListener listener : listeners) {
 					listener.update(getValue());
 				}

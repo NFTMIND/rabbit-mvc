@@ -62,7 +62,7 @@ public class WebPage extends Component {
 	public WebPage(HttpServlet servlet, final Tag tag) {
 		super(tag);
 		this.servlet = servlet;
-		
+	
 		initChildrenComponent(this, this, tag);
 		initELComponent(tag);
 		reverseVisit(new IComponentVisitor() {
@@ -263,6 +263,8 @@ public class WebPage extends Component {
 	private void initChildrenComponent(Component container, Component parent, Tag tag) {
 		initChildrenComponent("", container, parent, tag);
 	}
+	
+
 
 	/**
 	 * 初始化所有子元件 如果遇到Tag內含"rabbit:class"屬性 則自動產生新元件，並將Tag內的所有子元件納入該元件內
@@ -282,7 +284,8 @@ public class WebPage extends Component {
 					Component newParentComponent = createComponentByClassName(rabbitClass, eachTag);
 					newParentComponent.setContainer(true);
 					parent.addChild(newParentComponent);
-
+			
+			
 					initChildrenComponent(space + "	", newParentComponent, newParentComponent, eachTag);
 
 				} catch (Exception e) {
@@ -297,6 +300,7 @@ public class WebPage extends Component {
 						newComponent.setContainer(isContainer);
 					}
 					if (isContainer) {
+				
 						initChildrenComponent(space + "	", newComponent, newComponent, eachTag);
 					} else {
 						initChildrenComponent(space + "	", container, newComponent, eachTag);
@@ -385,6 +389,9 @@ public class WebPage extends Component {
 			field.set(container, mappedComponent);
 
 			parent.addChild(mappedComponent);
+			
+			
+			
 			return mappedComponent;
 
 		} catch (SecurityException e) {

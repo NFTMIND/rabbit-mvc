@@ -6,16 +6,16 @@
 </head>
 
 <body rabbit:class="os.rabbit.demo.ELDemo">
-${other}
+${label}
 <table border="0" rabbit:id="list">
   <tr>
-    <td style="${abc.age}">今天天氣${abc.name}!!</td>
+    <td>Hello everyone! My name is ${bean.name}!!</td>
   </tr>
   <tr>
-    <td>${abc.age}</td>
+    <td>I am ${bean.age} years old.</td>
   </tr>
   <tr>
-    <td>${abc.sex}</td>
+    <td>And I am a ${bean.sex}</td>
   </tr>
 </table>
 </body>

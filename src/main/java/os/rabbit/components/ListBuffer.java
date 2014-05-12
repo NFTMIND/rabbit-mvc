@@ -106,7 +106,9 @@ public class ListBuffer extends Component {
 	private void setIndex(int index) {
 		setAttribute("index", index);
 	}
-
+	public void clearBuffer() {
+		setAttribute("buffer", new StringWriter());
+	}
 	public void flush() {
 		StringWriter sw = new StringWriter();
 		PrintWriter writer = new PrintWriter(sw);

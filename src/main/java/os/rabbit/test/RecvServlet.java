@@ -41,7 +41,7 @@ public class RecvServlet extends HttpServlet {
 			    HttpGet httpGet = new HttpGet(url);
 			    CloseableHttpResponse response = httpclient.execute(httpGet);
 			    try {
-			        System.out.println(url);
+			
 			        HttpEntity entity = response.getEntity();
 			       // EntityUtils.consume(entity);
 			        resp.setHeader("ContentType", "application/swf");

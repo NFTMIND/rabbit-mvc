@@ -34,7 +34,7 @@ public class CheckBoxGroup extends FormComponent<List<String>> {
 		if (value instanceof String[]) {
 			String[] params = (String[]) value;
 			if (params != null) {
-				System.out.println("group size;" + params.length);
+			
 				setValue(transform(params));
 			}
 		} else {

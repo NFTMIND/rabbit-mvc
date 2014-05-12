@@ -34,33 +34,8 @@ public class FormDemo extends SpringBeanSupportComponent {
 		formUser.addFormListener(new IFormListener() {
 			@Override
 			public void submit() {
-				System.out.println("123");
-				// Enumeration<String> e =
-				// getPage().getRequest().getAttributeNames();
-				// String name = null;
-				// while( e.hasMoreElements()){
-				// name = e.nextElement();
-				// System.out.println("name = "+name+", value = "+getPage().getRequest().getAttribute(name));
-				// }
-				System.out.println("auth = " + getPage().getRequest().getHeader("Authorization"));
-
-				// String key = null;
-				// Enumeration<String> e1
-				// =getPage().getRequest().getHeaderNames();
-				// while( e1.hasMoreElements()){
-				// key = e1.nextElement();
-				// System.out.println("name = "+key+", value = "+getPage().getRequest().getHeader(key));
-				// }
-
-				System.out.println("remotehost = " + getPage().getRequest().getRemoteHost());
-
-				// formUser.error("測試");
-				// getPage().setRedirect("http://tw.yahoo.com");
-				// throw new RenderInterruptedException();
-
-				// IUserService userService =
-				// (IUserService)getBean("userService");
-				// userService.test();
+				
+				
 			}
 
 		});

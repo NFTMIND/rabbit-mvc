@@ -1,27 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.googlecode.rabbit-mvc</groupId>
+	<groupId>os.rabbit</groupId>
 	<artifactId>rabbit</artifactId>
-
-	<version>4.5.6-SNAPSHOT</version>
-	<scm>
-		<connection>scm:git:https://teco.li.email:Yg5xG9kT4gf3@code.google.com/p/rabbit-mvc/</connection>
-		<developerConnection>scm:git:https://teco.li.email:Yg5xG9kT4gf3@code.google.com/p/rabbit-mvc/</developerConnection>
-	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>sonatype</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</repository>
-		<snapshotRepository>
-			<id>sonatype</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
+	<version>4.5.1-SNAPSHOT</version>
 
 	<build>
+
 
 		<extensions>
 			<extension>
@@ -32,15 +18,9 @@
 		</extensions>
 
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.9</version>
-				<configuration>
-					<username>teco.li.email@gmail.com</username>
-					<password>Yg5xG9kT4gf3</password>
-				</configuration>
-			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-scm-plugin</artifactId> 
+				<version>1.9</version> <configuration> <username>teco.li.email@gmail.com</username> 
+				<password>Yg5xG9kT4gf3</password> </configuration> </plugin> -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -50,19 +30,39 @@
 					<encoding>utf-8</encoding>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9.1</version>
 				<configuration>
-					<outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+					<outputDirectory>${project.build.directory}/apidocs
+					</outputDirectory>
 					<encoding>utf-8</encoding>
 
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
 
-
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/${project.name}/libs</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeArtifactIds>ocm-rest</excludeArtifactIds>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 
@@ -142,6 +142,19 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.5.8</version>
 		</dependency>
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>0.8.0.RELEASE</version>
+		</dependency>
+
 
 	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>rabbit</id>
+			<url>sftp://www.apollo-chess.com.tw/usr/tomcat/context/gamesite/rabbit/repository</url>
+		</repository>
+	</distributionManagement>
 </project>

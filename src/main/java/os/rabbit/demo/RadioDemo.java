@@ -29,7 +29,7 @@ public class RadioDemo extends Component {
 			@Override
 			public void submit() {
 				msg.setValue(group.getValue());
-				System.out.println(group.getValue());
+			
 			}
 		});
 	}

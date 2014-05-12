@@ -23,8 +23,7 @@ public class TestUpdate extends SpringBeanSupportComponent {
 
 			@Override
 			public void submit() {
-				//System.out.println("file:" + fileField.getValue().length);
-				//System.out.println("field:" + textfield.getValue());
+	
 			}
 		});
 	}

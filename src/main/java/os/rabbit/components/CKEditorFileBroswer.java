@@ -75,7 +75,7 @@ public class CKEditorFileBroswer extends SpringBeanSupportComponent {
 				}
 				BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
 				File file = new File(targetPath + "/" + entry.getName());
-				System.out.println(entry.getName());
+		
 				File parent = file.getParentFile();
 				if (parent != null && (!parent.exists())) {
 					parent.mkdirs();
@@ -122,7 +122,7 @@ public class CKEditorFileBroswer extends SpringBeanSupportComponent {
 			public void invoke() {
 
 				String path = getRoot() + getPage().getParameter("path");
-				System.out.println("delete fiile:" + getPage().getParameter("path"));
+
 				File f = new File(path);
 				if (f.exists()) {
 					upzip(f, f.getParent());
@@ -136,7 +136,7 @@ public class CKEditorFileBroswer extends SpringBeanSupportComponent {
 			public void invoke() {
 
 				String path = getRoot() + getPage().getParameter("path");
-				System.out.println("delete fiile:" + getPage().getParameter("path"));
+			
 				File f = new File(path);
 				if (f.exists()) {
 					delete(f);

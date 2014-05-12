@@ -21,7 +21,7 @@ public class AjaxButtonExample extends SpringBeanSupportComponent {
 			
 			@Override
 			public void click() {
-				System.out.println("text box value:" + field.getValue());
+			
 			}
 		});
 	}

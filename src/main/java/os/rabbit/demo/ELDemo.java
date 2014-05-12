@@ -2,13 +2,12 @@ package os.rabbit.demo;
 
 import os.rabbit.components.Component;
 import os.rabbit.components.ELComponent;
-import os.rabbit.components.ListBuffer;
 import os.rabbit.parser.Tag;
 
 public class ELDemo extends Component {
-	private ListBuffer list;
-	private ELComponent abc;
-	private ELComponent other;
+
+	private ELComponent bean;
+	private ELComponent label;
 
 	public ELDemo(Tag tag) {
 		super(tag);
@@ -17,15 +16,14 @@ public class ELDemo extends Component {
 	@Override
 	protected void beforeRender() {
 	
-		other.setValue("中文測試");
+		label.setValue("Text test");
 		DemoObject el = new DemoObject();
-		for (int i = 0; i < 5; i++) {
-			el.setAge(32 + i);
-			el.setName("Hello");
-			el.setSex("男");
-			abc.setValue(el);
-			list.flush();
-		}
+	
+		el.setAge(31);
+		el.setName("Teco Li");
+		el.setSex("Male");
+		bean.setValue(el);
+	
 	}
 
 }

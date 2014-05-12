@@ -22,7 +22,7 @@ public class WWWAuthenticate extends Component {
 			au = au.substring(5, au.length());
 		
 			String rs = new String(Base64.decodeBase64(au));
-			System.out.println("tet:" + rs);
+		
 		}
 		
 		getPage().getResponse().setHeader("WWW-Authenticate", "Basic realm=\"testrealm@keakon.cn\"");

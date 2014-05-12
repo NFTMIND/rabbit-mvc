@@ -285,7 +285,7 @@ public class Component implements IModifier {
 				translator = new Translator();
 				languageWordMap.put(language, translator);
 			}
-			System.out.println("clear:" + translator.lastModified + "," + file.lastModified());
+		
 			translator.lastModified = file.lastModified();
 			translator.table.clear();
 			
@@ -422,8 +422,6 @@ public class Component implements IModifier {
 				value = value.substring(4, end);
 				
 				translator.table.put(word, value);
-				
-				System.out.println("before save:" + translator+ ":" + translator.table.size());
 				save(targetLanguage, translator);
 
 				return value;

@@ -7,13 +7,17 @@
 
 <body rabbit:class="os.rabbit.demo.CheckBoxDemo">
 您目前選的是：<span rabbit:id="msg">選項</span>
-<form rabbit:id="form" method="post">
+<form rabbit:id="form" method="post" enctype="multipart/form-data">
 
 <div rabbit:id="group">
 
 <input type="checkbox" rabbit:id="checkBox1" />
 <input type="checkbox" rabbit:id="checkBox2" />
 <input type="checkbox" rabbit:id="checkBox3" />
+<div rabbit:id="list">
+<input type="checkbox" rabbit:id="forEachCkbx" />
+
+</div>
 
 </div>
 
