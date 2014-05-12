@@ -2,3 +2,6 @@ target
 build.xml
 /release
 /WEB-INF
+/WebContent
+/doc
+/gpg
