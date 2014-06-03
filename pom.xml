@@ -5,7 +5,6 @@
 	<groupId>os.rabbit</groupId>
 	<artifactId>rabbit</artifactId>
 	<version>4.5.1-SNAPSHOT</version>
-
 	<build>
 		<extensions>
 			<extension>
