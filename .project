@@ -33,11 +33,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>settings.xml</name>
-			<type>1</type>
-			<location>C:/Users/Teco/.m2/settings.xml</location>
-		</link>
-	</linkedResources>
 </projectDescription>

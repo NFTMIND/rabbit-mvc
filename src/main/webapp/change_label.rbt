@@ -1,0 +1,17 @@
+
+
+<!DOCTYPE html>
+<html>
+    <body>
+   <div  rabbit:class="os.rabbit.demo.ChangeLabelDemo">
+   		<table>
+   			<tr rabbit:id="listObj">
+   				<td>
+   					<input type="button" rabbit:id="btnObj" value="按我" /><span rabbit:id="lblText">123123</span>
+   				</td>
+   			</tr>
+   		</table>
+   </div>
+  </body>
+</html>
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+
+</head>
+
+
+<body>
+
+<div rabbit:class="os.rabbit.examples.DivAlongExample">
+ <input type="button" name="button4" id="button4" value="跳啦" rabbit:id="btnShow" /><br/>
+  <div rabbit:id="div">
+  
+  <table>
+<tr>
+  <td bgcolor="#FFFFFF">名稱</td>
+  <td bgcolor="#FFFFFF"><input type="text" name="txtName" id="txtName" rabbit:id="txtName" /></td></tr>
+<tr>
+  <td bgcolor="#FFFFFF">&nbsp;</td>
+  <td bgcolor="#FFFFFF">
+    <input type="button" name="button5" id="button5" value="關" rabbit:id="btnClose"/></td>
+</tr>
+</table>
+</div>
+</div>
+
+</body>
+</html>

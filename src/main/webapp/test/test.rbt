@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body rabbit:class="com.newegg.orderlunch.demo.TestComponent">
+	
+	
+
+	<div rabbit:id="cmpBox">
+		<div rabbit:id="listBuf">
+			<input type="button" rabbit:id="btnTest" value="按" />
+		</div>
+		
+			
+	</div>
+	
+	<!--  txtBox 放到cmpBox外面btnTest按下只有第一次取得到txtbox的值-->
+	<input type="hidden" rabbit:id="txtBox"  />
+	
+</body>
+</html>

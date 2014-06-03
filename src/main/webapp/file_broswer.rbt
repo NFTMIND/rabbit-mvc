@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Untitled Document</title>
+</head>
+
+<script>
+
+	function select(url) {
+		window.opener.CKEDITOR.tools.callFunction(
+		$("#funcNum").val(), url);
+		window.close();
+	}
+</script>
+<body rabbit:class="os.rabbit.components.CKEditorFileBroswer">
+
+<span rabbit:id="rowPath"><a href="#" rabbit:id="link">/hello</a></span>
+<form action="" method="post" enctype="multipart/form-data" rabbit:id="form">
+	  <input type="hidden" rabbit:id="parent" />
+	  <input type="hidden" rabbit:id="id" />
+	  <input type="hidden" rabbit:id="funcNum" />
+	  <input type="file" rabbit:id="upload" />
+      <input type="submit" name="button" id="button" value="上傳" />
+  <br />
+  <input type="text" rabbit:id="txtAddedFolder"/>
+  <input type="button" rabbit:id="btnAddFolder" value="新增資料夾" />
+</form>
+
+	
+			<div style="float:left; width:200px;cursor:pointer" rabbit:id="rowFile">
+			<table border="0" rabbit:id="popupMenu">
+			  <tr>
+			    <td><img rabbit:id="imgType" /></td>
+			    <td onmouseout="$(this).css('background-color','')" onmouseover="$(this).css('background-color', '#990')"><span rabbit:id="lblFileName">Hello</span></td>
+		      </tr>
+			  </table>			
+			
+			</div>
+
+</body>
+</html>

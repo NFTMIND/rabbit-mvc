@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="background/member_manager" template="/background/template.rbt">
+		<put-attribute name="title" value="會員管理" />
+		<put-attribute name="body" value="/background/member_manager.rbt" />
+	</definition>
+
+	<definition name="demo/tiles_demo" template="/demo/template.rbt">
+		<put-attribute name="title" value="會員管理" />
+		<put-attribute name="body" value="/demo/tiles_demo.rbt" />
+	</definition>
+	<definition name="demo/authorized_demo" template="/demo/template.rbt">
+		<put-attribute name="title" value="會員管理" />
+		<put-attribute name="body" value="/demo/authorized_demo.rbt" />
+	</definition>
+	<definition name="test/form" template="/test/template.rbt">
+		<put-attribute name="title" value="華測試" />
+		<put-attribute name="menu_bar" value="/test/empty.rbt" />
+		<put-attribute name="body" value="/test/form.rbt" />
+
+	</definition>
+	<definition name="test/www_authenticate" template="/test/template.rbt">
+		<put-attribute name="title" value="華測試" />
+		<put-attribute name="menu_bar" value="/test/empty.rbt" />
+		<put-attribute name="body" value="/test/www_authenticate.rbt" />
+
+	</definition>
+
+	<definition name="demo/apache_tiles_demo" template="/demo/apache_tiles_demo.rbt">
+		<put-attribute name="body" value="/demo/tiles1.rbt" />
+		<put-attribute name="title" value="Apache Tiles Demo" />
+	</definition>
+</tiles-definitions>

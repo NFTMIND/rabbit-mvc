@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<body >
+<div  onLoad="alert(location.href);"></div>
+
+<div rabbit:class="os.rabbit.test.FormDemo">
+	<form method="post" rabbit:id="formUser">
+		
+		<input type="submit" value="送出" />
+	</form>
+	
+</div>
+</body>
+</html>

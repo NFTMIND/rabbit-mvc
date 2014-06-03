@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<html>
+    <body>
+   <div  rabbit:class="com.newegg.orderlunch.demo.ChangeLabelDemo">
+   		<table rabbit:id="cmpDiv">
+   			<tr rabbit:id="listObj">
+   				<td>
+   					<input type="button" rabbit:id="btnObj" value="按我" /><span  rabbit:id="lblText" >123</span>
+   				</td>
+   			</tr>
+   		</table>
+   </div>
+   
+<script language="javascript">
+function repaintCmp()
+{
+Rabbit.invoke("", "test", "", false);
+}
+setInterval("repaintCmp()",3000);
+</script>
+  </body>
+  
+</html>

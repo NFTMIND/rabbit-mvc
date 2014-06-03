@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<language>
+	<translation value="Hello">你好</translation>
+	<translation value="Please enter the word that you want to be translated.">請輸入您想被翻譯的字</translation>
+</language>

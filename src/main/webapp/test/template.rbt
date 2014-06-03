@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><span rabbit:id="title" rabbit:class="os.rabbit.tiles.InsertStringComponent" /></title>
+
+ <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 最新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css" />
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap-theme.min.css" />
+</head>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<body onLoad="alert(location.href);">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <div rabbit:id="menu_bar" rabbit:class="os.rabbit.tiles.InsertBodyComponent">選單區域</div>
+  <tr>
+    <td align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="10%" align="center" valign="top" style="padding-top:20px; padding-left:15px">
+ 
+    </td>
+    <td align="left" valign="top" style="padding-left:10px;"> <div rabbit:id="body" rabbit:class="os.rabbit.tiles.InsertBodyComponent">主體區域</div></td></tr></table>
+</td>
+  </tr>
+  <tr>
+    <td align="center" class="main_nav" style="height:105px"><h3>Power by Newegg</h3>
+    <p>Copyright &copy; 2014 Digital Newegg 版權所有</p></td>
+  </tr>
+</table>
+
+
+
+
+</body>
+</html>

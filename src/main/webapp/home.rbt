@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Rabbit</title>
+</head>
+
+<body>
+
+<p dir="ltr">Rabbit 4.0.0(2013/12/12) <a href="downloads/rabbit-4.0.0.jar">點此下載
+</a><br />
+Rabbit &amp; DAO Generator Eclipse Plugin(2013/12/12) <a href="downloads/RabbitDaoGenerator-1.0.0.jar">點此下載</a><br />
+</p>
+<p dir="ltr">Rabbit是一個用Java語言開發的MVC框架。</p>
+<p dir="ltr">使用Rabbit進行網頁程式開發會讓你寫起網頁程式變的單純許多，首先你無需處理一大堆網頁參數傳遞的問題，也不用寫一大堆流程的設定檔，更重要的是Rabbit提供了非常多的元件讓你使用，這使得你無需花太多時間關注底層的事情，也讓你開發起網頁程式更加的容易。</p>
+<ol>
+  <li>我的第一隻Rabbit程式</li>
+  <li>基本架構說明</li>
+  <li>元件使用說明
+    <ol>
+      <li>Label</li>
+      <li>ListBuffer</li>
+      <li>Form
+        <ul>
+          <li>TextBox</li>
+          <li>IntBox</li>
+          <li>FloatBox</li>
+          <li>FileUpload</li>
+          <li>JSONBox</li>
+          <li>DateBox</li>
+          <li>FileBox</li>
+          <li>ComboBox</li>
+          <li>BooleanCheckBox</li>
+          <li>CheckBox</li>
+          <li>Radio</li>
+          <li>CKEditor</li>
+          <li>ValidateCodeBox      </li>
+        </ul>
+      </li>
+      <li>Button</li>
+      <li>AjaxButton</li>
+      <li>EditableLabel</li>
+      <li>Image</li>
+      <li>Link</li>
+      <li>Paging</li>
+      <li>PopupMenu</li>
+      <li>TreeBuffer</li>
+    </ol>
+  </li>
+  <li>元件事件處理</li>
+  <li>修改HTML標籤屬性</li>
+  <li>事件的回呼叫處理</li>
+  <li>多國語言</li>
+  <li>Rabbit Tiles</li>
+  <li>元件權限控制</li>
+  <li>結合Spring</li>
+</ol>
+
+
+<ol>
+</ol>
+<p dir="ltr">其它MVC框架的問題</p>
+<p dir="ltr">市面上有很多MVC的框架，但在我看來都不好用。</p>
+<p dir="ltr">例如Struts、Spring MVC、Tapestry、Wicket....等等</p>
+<p dir="ltr">Struts和Spring MVC根本不算是MVC框架，充其量只能稱為流程控制框架而己。</p>
+<p dir="ltr">我在業界待了這麼多年，從來未見過有美術人員可以直接自己修改JSP。</p>
+<p dir="ltr">通常都是切版完成後，直接切給程式設計師去套入程式，之後要修改通常是只能交給程式設計師了。</p>
+<p dir="ltr">我不能理解這樣的框架為何會紅，而且為何它可以在業界生存多年？難道不曾有人懷疑這樣的東西反而讓寫程式更麻煩嗎？</p>
+<p dir="ltr">我們先分析Struts的問題點：</p>
+<p dir="ltr">問題1：</p>
+<p dir="ltr">首先寫Struts程式要建立1個Java程式和1個JSP頁面。Java程式負責去資料庫抓資料或是做一些資料處理的動作，完成後將資料塞入Request內，再將程式流程轉交給JSP頁面，這時JSP頁面再將Request內的資料抓出來，並顯示在頁面上。</p>
+<p dir="ltr">例如：</p>
+<p dir="ltr">hello_world.do(Java)--&gt;hello_world.jsp</p>
+<p dir="ltr">這樣看起來很正常，也符合MVC的概念，所以我認同這樣的做法。</p>
+<p dir="ltr">但接下來我們要講到問題的重點了</p>
+<p dir="ltr">「表單」</p>
+<p dir="ltr">表單產生資料要送交給Server去處理時，問題就產生了。</p>
+<p dir="ltr">例如：<img src="https://docs.google.com/drawings/d/see8psDMMf_kGDIty-jG7tw/image?w=423&amp;h=256&amp;rev=92&amp;ac=1" width="423px;" height="256px;" /></p>
+<br />
+<p dir="ltr">各位看到問題點了嗎？form_handle.do的存在並不合理。</p>
+<p dir="ltr">以物件導向的概念來看，處理表單送出的責任，應該是要交由form.do去處理，但在Struts上卻多產生了一個form_handle.do的類別必須要去處理一個本來是屬於form.do的事情；一開始寫時倒還好，但是表單的量多了，就複雜了，不但設定檔複雜，維護時要找問題也不容易找，更重要的是這樣的概念並不直覺。</p>
+<p dir="ltr">後期的Struts有針對這些問題進行優化，但他本身的概念就不是一個符合OO的模型。</p>
+<p dir="ltr">問題2：</p>
+<p dir="ltr">各位想想看，我把資料丟到一個Request，然後JSP再去Request裡面把資料拿出來，這是符合MVC的概念，但卻不夠直覺，因為我們在寫JSP時並不知道Request內有什麼變數可以使用，雖然我們可以在JSP與Java之間制定公用的變數名稱，但你想想看在寫JSP時還需要查表其實是一件很麻煩的事。</p>
+<p dir="ltr">問題3：</p>
+<p dir="ltr">另一個問題是你在寫JSP時並不像在寫Java一樣這麼自由和方便，要引用物件還得靠Bean標籤的宣告才能使用，當然你可以選擇用New來產生物件，但是當JSP上有太多物件羅輯時，那麼MVC的概念也就隨著你所增加的程式碼而消失怠盡。</p>
+<p dir="ltr">問題4：</p>
+<p dir="ltr">開發者的素質也是很大的問題。當你接手別人的MVC程式時，發現大家仍然是在JSP裡面存取資料庫的資料，結果MVC框架變毫無作用，最後還回到原點。</p>
+<br />
+<p dir="ltr">問題5：</p>
+<p dir="ltr">開發者User可以直接在*.jsp把事情處理完畢，或是必須透過*.do再轉向*.jsp，這其實是一件極度模糊焦點的事。</p>
+<p dir="ltr">自由度太高時維護者就容易看到太多不同的做法，最後一團糟。</p>
+<br />
+<p dir="ltr">結論：</p>
+<p dir="ltr">其實Struts所產生的問題遠比他的帶來的效益高太多了，但這種框架仍然在業界風行，這證明了很多人寫程式只是遵照上面的人交待給你的方法做，而沒有去思考這樣做是不是真的可以減少開發時間和維護難度。</p>
+<br />
+<p dir="ltr">&nbsp;</p>
+<br />
+</body>
+</html>
