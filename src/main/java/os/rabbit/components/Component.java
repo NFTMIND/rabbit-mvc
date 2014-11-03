@@ -588,7 +588,9 @@ public class Component implements IModifier {
 		modifiers.remove(modifier);
 	}
 
-	public void buildComplete() {
+	final void buildComplete() {
+		
+		logger.debug("	buildComplete component:" + componentListenerList.size());
 		for (IComponentListener listener : componentListenerList) {
 			listener.afterBuild();
 			listener.initial();

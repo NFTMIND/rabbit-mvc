@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,10 +54,10 @@ public class WebPage extends Component {
 	private ThreadLocal<HttpServletRequest> request = new ThreadLocal<HttpServletRequest>();
 	private ThreadLocal<HttpServletResponse> response = new ThreadLocal<HttpServletResponse>();
 
-	private HashMap<String, ITrigger> triggerTable = new HashMap<String, ITrigger>();
-	private HashMap<String, IRender> scripts = new HashMap<String, IRender>();
-	private HashMap<String, IRender> scriptImports = new HashMap<String, IRender>();
-	private HashMap<String, IRender> cssImports = new HashMap<String, IRender>();
+	private HashMap<String, ITrigger> triggerTable = new LinkedHashMap<String, ITrigger>();
+	private HashMap<String, IRender> scripts = new LinkedHashMap<String, IRender>();
+	private HashMap<String, IRender> scriptImports = new LinkedHashMap<String, IRender>();
+	private HashMap<String, IRender> cssImports = new LinkedHashMap<String, IRender>();
 	private HttpServlet servlet;
 
 	public WebPage(HttpServlet servlet, final Tag tag) {
@@ -69,7 +70,7 @@ public class WebPage extends Component {
 
 			@Override
 			public boolean visit(Component component) {
-
+				logger.debug("visit component:" + component.getClass());
 				component.buildComplete();
 				return true;
 			}
